@@ -9,38 +9,38 @@
   "theme_color": "#222427",
   "icons": [
     {
-      "src": "/icon/16.png",
+      "src": "./icon/16.png",
       "type": "image/png",
       "sizes": "16x16"
     },
     {
-      "src": "/icon/48.png",
+      "src": "./icon/48.png",
       "type": "image/png",
       "sizes": "48x48"
     },
     {
-      "src": "/icon/128.png",
+      "src": "./icon/128.png",
       "type": "image/png",
       "sizes": "128x128"
     },
     {
-      "src": "/icon/192.png",
+      "src": "./icon/192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/icon/512.png",
+      "src": "./icon/512.png",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "/icon/192_circle.png",
+      "src": "./icon/192_circle.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "maskable"
     },
     {
-      "src": "/icon/512_circle.png",
+      "src": "./icon/512_circle.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "maskable"
@@ -48,7 +48,7 @@
   ],
   "file_handlers": [
     {
-      "action": "/player.html",
+      "action": "./player.html",
       "accept": {
         "video/*": [".mp4",".mkv",".webm",".3gp",".avi",".mpeg",".mpg",".ogg",".mp3",".wmv",".wav",".mov"],
         "audio/*": [".mp4",".mkv",".webm",".3gp",".avi",".mpeg",".mpg",".ogg",".mp3",".wmv",".wav",".mov"]
@@ -58,7 +58,7 @@
   ],
   "screenshots": [
     {
-      "src": "/img/screenshot-1.png",
+      "src": "./img/screenshot-1.png",
       "type": "image/png",
       "sizes": "1280x800"
     }
