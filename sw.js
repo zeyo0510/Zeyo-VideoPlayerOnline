@@ -13,7 +13,7 @@ class SW
   static onInstall(a)
   {
     console.log(`${Version} installing\u2026`);
-    a.waitUntil(caches.open(Version).then(b=>b.addAll(AllFiles.map(c=>`${c}`))))
+    // a.waitUntil(caches.open(Version).then(b=>b.addAll(AllFiles.map(c=>`${c}`))))
   }
   
   static onActivate(a)
