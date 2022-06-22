@@ -3,7 +3,7 @@
   "name": "Video Player",
   "description": "A web video player for local files.",
   "scope": "./",
-  "start_url": "./player.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#222427",
@@ -48,7 +48,7 @@
   ],
   "file_handlers": [
     {
-      "action": "./player.html",
+      "action": "./index.html",
       "accept": {
         "video/*": [".mp4",".mkv",".webm",".3gp",".avi",".mpeg",".mpg",".ogg",".mp3",".wmv",".wav",".mov"],
         "audio/*": [".mp4",".mkv",".webm",".3gp",".avi",".mpeg",".mpg",".ogg",".mp3",".wmv",".wav",".mov"]
