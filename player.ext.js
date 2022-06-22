@@ -12,7 +12,7 @@ class PWA
   static swRegister()
   {
     "serviceWorker" in navigator
-    ?navigator.serviceWorker.register("/sw.js",{updateViaCache:"all"}).then(function(a){console.log("Service worker registration succeeded")},function(a){console.log("Service worker registration failed:",a)})
+    ?navigator.serviceWorker.register("./sw.js",{updateViaCache:"all"}).then(function(a){console.log("Service worker registration succeeded")},function(a){console.log("Service worker registration failed:",a)})
     :console.log("Service workers are not supported.")
   }
   
