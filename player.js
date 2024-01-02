@@ -73,26 +73,26 @@ class Utils
 
   static formatTime(a)
   {
-    var b=Math.round(a);
-        a=Math.floor(b/60);
-    b%=60;
-    return`${10>a?"0"+a:a}:${10>b?"0"+b:b}`
+    var b = Math.round(a);
+        a = Math.floor(b / 60);
+    b %= 60;
+    return `${10>a?"0"+a:a}:${10>b?"0"+b:b}`
   }
 
   static screenshot()
   {
-    if(!(2>video.readyState))
+    if (!(2 > video.readyState))
     {
       Utils.canvas||(Utils.canvas=document.createElement("canvas"));
       Utils.file||(Utils.file=document.createElement("a"));
-      var a=Utils.canvas,
-          b=Utils.file;
-      a.width=video.videoWidth;
-      a.height=video.videoHeight;
-      a.getContext("2d").drawImage(video,0,0,a.width,a.height);
-      settings&&"png"==settings.screenshotFormat
-      ?(b.download=`screenshot-${video.currentTime.toFixed(3)}.png`,b.href=a.toDataURL("image/png"))
-      :(b.download=`screenshot-${video.currentTime.toFixed(3)}.jpg`,b.href=a.toDataURL("image/jpeg",.98));
+      var a = Utils.canvas,
+          b = Utils.file;
+      a.width  = video.videoWidth;
+      a.height = video.videoHeight;
+      a.getContext("2d").drawImage(video, 0, 0, a.width, a.height);
+      settings && "png" == settings.screenshotFormat
+      ? (b.download = `screenshot-${video.currentTime.toFixed(3)}.png`, b.href = a.toDataURL("image/png")     )
+      : (b.download = `screenshot-${video.currentTime.toFixed(3)}.jpg`, b.href = a.toDataURL("image/jpeg",.98));
       b.click()
     }
   }
@@ -105,9 +105,13 @@ class Clock
 {
   static init()
   {
-    let a={hourCycle:settings.timeFormatHour12?"h12":"h23",hour:"2-digit",minute:"2-digit"};
-    settings.timeFormatSecond&&(a.second="2-digit");
-    Clock.ClockFormat=new Intl.DateTimeFormat("en-GB",a)
+    let a = {
+      hourCycle : settings.timeFormatHour12 ? "h12" : "h23"
+    , hour      : "2-digit"
+    , minute    : "2-digit"
+    };
+    settings.timeFormatSecond && (a.second = "2-digit");
+    Clock.ClockFormat = new Intl.DateTimeFormat("en-GB", a)
   }
 
   static toggleClockTime()
@@ -125,7 +129,6 @@ class Clock
 
 class Player
 {
-  
   static init()
   {
 
@@ -133,23 +136,25 @@ class Player
 
   static async loadFile(a)
   {
-    document.title=a.name;
-    Player.objectURL&&URL.revokeObjectURL(Player.objectURL);
-    Player.objectURL=URL.createObjectURL(a);
-    video.src=Player.objectURL;
-    if(void 0===a.canPlay)
+    document.title = a.name;
+    Player.objectURL && URL.revokeObjectURL(Player.objectURL);
+    Player.objectURL = URL.createObjectURL(a);
+    video.src = Player.objectURL;
+    if (void 0 === a.canPlay) {
       try
       {
-        await video.play(),a.canPlay=true
-      }catch(b){
-        a.canPlay=false,
+        await video.play(),
+        a.canPlay = true
+      } catch(b) {
+        a.canPlay = false,
         Player.stop(),
-        "NotSupportedError"==b.name
-        ?Utils.showError(Messages.cannotSupportFormat)
-        :Utils.showError(Messages.error)
+        "NotSupportedError" == b.name
+        ? Utils.showError(Messages.cannotSupportFormat)
+        : Utils.showError(Messages.error)
       }
-    else
-      true===a.canPlay&&Player.play();
+    } else {
+      true === a.canPlay && Player.play();
+    }
     Controls.onVideoChange()
   }
 
@@ -161,12 +166,12 @@ class Player
 
   static async play()
   {
-    if(video.src)
+    if (video.src)
     {
       try
       {
         await video.play();
-      }catch(a){
+      } catch(a) {
         Utils.showError(Messages.error);
       }
     }
@@ -175,27 +180,27 @@ class Player
   static playNext()
   {
     let a = FileManager.getNextFile(true);
-    return a ? (Player.loadFile(a),true) : false
+    return a ? (Player.loadFile(a), true) : false
   }
 
   static playPrevious()
   {
     let a = FileManager.getNextFile(false);
-    return a ? (Player.loadFile(a),true) : false
+    return a ? (Player.loadFile(a), true) : false
   }
 
   static togglePlay()
   {
-    video.paused||video.ended?Player.play():video.pause()
+    video.paused || video.ended ? Player.play() : video.pause()
   }
 
   static toggleMute()
   {
-    video.muted=!video.muted;
-    Utils.showInfo(video.muted?Messages.muted:Messages.unmuted)
+    video.muted = !video.muted;
+    Utils.showInfo(video.muted ? Messages.muted : Messages.unmuted)
   }
 
-  static seek(a,b)
+  static seek(a, b)
   {
     !video.src||!Number.isFinite(video.duration)||1>b&&!video.paused||
     (
@@ -206,44 +211,46 @@ class Player
 
   static volume(a,b)
   {
-    let c=Math.round(100*video.volume);
-        c=a?Math.min(c+b,100):Math.max(c-b,0);
-    video.volume=c/100;
-    Utils.showInfo(Messages.volumeIs+c)
+    let c = Math.round(100 * video.volume);
+        c = a ? Math.min(c + b, 100)
+              : Math.max(c - b,   0);
+    video.volume = c / 100;
+    Utils.showInfo(Messages.volumeIs + c);
   }
 
   static speed(a,b)
   {
-    a = a ? parseFloat((video.playbackRate + b).toFixed(2)) : parseFloat((video.playbackRate - b).toFixed(2));
+    a = a ? parseFloat((video.playbackRate + b).toFixed(2))
+          : parseFloat((video.playbackRate - b).toFixed(2));
     .25 <= a && 5 >= a && (video.playbackRate = a);
-    Utils.showInfo(Messages.speedIs + video.playbackRate)
+    Utils.showInfo(Messages.speedIs + video.playbackRate);
   }
 
   static resetSpeed()
   {
-    video.playbackRate=1;
-    Utils.showInfo(Messages.speedIs+"1")
+    video.playbackRate = 1;
+    Utils.showInfo(Messages.speedIs + "1");
   }
 
   static toggleVideoTime()
   {
-    video.src&&Number.isFinite(video.duration)&&
+    video.src && Number.isFinite(video.duration) &&
     (
       ltInfo.classList.contains("d-none")
-      ?(Player.updateVideoTime(),ltInfo.classList.remove("d-none"),Player.timeTimer=setInterval(Player.updateVideoTime,1E3))
-      :(ltInfo.classList.add("d-none"),clearInterval(Player.timeTimer))
+      ? (Player.updateVideoTime(),ltInfo.classList.remove("d-none"),Player.timeTimer=setInterval(Player.updateVideoTime,1E3))
+      : (ltInfo.classList.add("d-none"),clearInterval(Player.timeTimer))
     )
   }
 
   static updateVideoTime()
   {
-    let a=`${Utils.formatTime(video.currentTime)} / ${Utils.formatTime(video.duration)}  [-${Utils.formatTime(video.duration-video.currentTime)}]`;
-    ltInfo.textContent=a
+    let a = `${Utils.formatTime(video.currentTime)} / ${Utils.formatTime(video.duration)}  [-${Utils.formatTime(video.duration-video.currentTime)}]`;
+    ltInfo.textContent = a;
   }
 }
 
-var mouseMoveTimer=0,
-    lickDblclickTimer=0;
+var mouseMoveTimer    = 0
+,   lickDblclickTimer = 0;
 
 class Controls
 {
@@ -289,7 +296,7 @@ class Controls
 
   static changeTimeMode()
   {
-    remainingTimeMode=!remainingTimeMode;
+    remainingTimeMode = !remainingTimeMode;
     Controls.updateTime()
   }
 
@@ -305,8 +312,8 @@ class Controls
 
   static onLoadedmetadata()
   {
-    document.fullscreenElement||WindowManager.scaleSize(1);
-    progress.max=video.duration;
+    document.fullscreenElement || WindowManager.scaleSize(1);
+    progress.max = video.duration;
     Controls.updateTime();
   }
 
@@ -327,13 +334,13 @@ class Controls
 
   static onVideoChange()
   {
-    const [a,b]=FileManager.hasPreviousNext();
+    const [a, b] = FileManager.hasPreviousNext();
     a
-    ?previousBtn.classList.remove("disabled")
-    :previousBtn.classList.add("disabled");
+    ? previousBtn.classList.remove("disabled")
+    : previousBtn.classList.add("disabled");
     b
-    ?nextBtn.classList.remove("disabled")
-    :nextBtn.classList.add("disabled")
+    ? nextBtn.classList.remove("disabled")
+    : nextBtn.classList.add("disabled")
   }
 
   static onProgressChange()
@@ -363,7 +370,7 @@ class Controls
 
   static onVideoEnd()
   {
-    Player.playNext() || WindowManager.exitFullscreen()
+    Player.playNext() || WindowManager.exitFullscreen();
   }
 
   static onPlayerClick(a)
@@ -381,7 +388,7 @@ class Controls
     a=a.currentTarget.id;
     let b = 1500;
     "player" == a ? b = 1500 : 
-    "controls" == a ? b = 4500:
+    "controls" == a ? b = 4500 :
     "settings" == a && (b = 2E4);
     mouseMoveTimer = setTimeout(Controls.hide, b)
   }
@@ -436,8 +443,8 @@ class Controls
   }
 }
 
-var lastDragTime = 0,
-    dragTimer = 0;
+var lastDragTime = 0
+,   dragTimer    = 0;
 
 class FileManager
 {
@@ -452,18 +459,18 @@ class FileManager
   
   static getNextFile(a)
   {
-    a=a?FileManager.playIndex+1:FileManager.playIndex-1;
-    return 0<=a&&a<fileList.length?(FileManager.playIndex=a,fileList[a]):null
+    a = a ? FileManager.playIndex + 1 : FileManager.playIndex - 1;
+    return 0 <= a && a < fileList.length ? (FileManager.playIndex = a, fileList[a]) : null
   }
 
   static hasPreviousNext()
   {
-    return[0<FileManager.playIndex,FileManager.playIndex<fileList.length-1]
+    return [0<FileManager.playIndex, FileManager.playIndex < fileList.length - 1]
   }
 
   static openFiles()
   {
-    FileManager.inputFile.click()
+    FileManager.inputFile.click();
   }
 
   static updateFileList(a)
@@ -477,7 +484,8 @@ class FileManager
 
   static onSelectFile(a)
   {
-    FileManager.updateFileList(this.files);this.value=null
+    FileManager.updateFileList(this.files);
+    this.value = null;
   }
 
   static toggleDropzone(a)
@@ -492,7 +500,7 @@ class FileManager
   static dragEnd()
   {
     clearInterval(dragTimer);
-    dragTimer=0;
+    dragTimer = 0;
     FileManager.toggleDropzone(false);
   }
 
@@ -512,7 +520,7 @@ class FileManager
   {
     a.preventDefault();
     FileManager.dragEnd();
-    FileManager.updateFileList(a.dataTransfer.files)
+    FileManager.updateFileList(a.dataTransfer.files);
   }
 }
 
@@ -542,25 +550,25 @@ class WindowManager
 
   static getBrowserHeadHeight()
   {
-    if(void 0!==WindowManager.browserHeadHeight)
+    if(void 0 !== WindowManager.browserHeadHeight)
       return WindowManager.browserHeadHeight;
-    let a=window.outerHeight-window.innerHeight;
-    return 0<a?WindowManager.browserHeadHeight=a:28
+    let a = window.outerHeight - window.innerHeight;
+    return 0 < a ? WindowManager.browserHeadHeight = a : 28
   }
 
   static scaleSize(a)
   {
     if (popupWindow && 0 < video.videoWidth && 0 < video.videoHeight)
     {
-      var b=WindowManager.getBrowserHeadHeight();
-      const c=video.videoWidth/video.videoHeight;
-      let d=Math.min(window.screen.availWidth,video.videoWidth*a);
-      a=Math.min(window.screen.availHeight,video.videoHeight*a+b);
-      let e=Math.floor((a-b)*c);
-      e<=d?d=e:(b=Math.floor(d/c)+b,b<=a&&(a=b));
-      window.resizeTo(d,a);
-      window.moveTo((screen.availWidth-d)/2+screen.availLeft,(screen.availHeight-a)/2+screen.availTop);
-      WindowManager.saveWindowState()
+      var b = WindowManager.getBrowserHeadHeight();
+      const c = video.videoWidth / video.videoHeight;
+      let d = Math.min(window.screen.availWidth,video.videoWidth * a);
+      a = Math.min(window.screen.availHeight,video.videoHeight * a + b);
+      let e = Math.floor((a-b)*c);
+      e <= d ? d = e : (b = Math.floor(d / c) + b, b <= a && (a = b));
+      window.resizeTo(d, a);
+      window.moveTo((screen.availWidth - d) / 2 + screen.availLeft, (screen.availHeight - a) / 2 + screen.availTop);
+      WindowManager.saveWindowState();
     }
   }
 
@@ -569,8 +577,8 @@ class WindowManager
     popupWindow && 0 < video.videoWidth && 0 < video.videoHeight &&
     (
       a
-      ?a=(window.innerWidth+video.videoWidth/4)/video.videoWidth
-      :(a=(window.innerWidth-video.videoWidth/4)/video.videoWidth,a=Math.max(a,.25)),
+      ?  a=(window.innerWidth+video.videoWidth / 4) / video.videoWidth
+      : (a=(window.innerWidth-video.videoWidth / 4) / video.videoWidth, a = Math.max(a,.25)),
       WindowManager.scaleSize(a)
     )
   }
@@ -584,7 +592,9 @@ class WindowManager
   static toggleMaxSize()
   {
     popupWindow && (
-      WindowManager.isMaxSize() ? WindowManager.restoreState() : window.resizeTo(window.screen.availWidth, window.screen.availHeight)
+      WindowManager.isMaxSize()
+      ? WindowManager.restoreState()
+      : window.resizeTo(window.screen.availWidth, window.screen.availHeight)
     )
   }
 
@@ -624,16 +634,16 @@ class Settings
     screenshotFormatInput.addEventListener("change",Settings.saveScreenshotFormat);
     if(extensionMode)
       return new Promise(function(f,h){chrome.storage.sync.get(settings, function(g){settings=g;Settings.initInputValues();f()})});
-    let a=localStorage.getItem("seekStep"),
-        b=localStorage.getItem("seekLongStep"),
-        c=localStorage.getItem("volumeStep"),
-        d=localStorage.getItem("speedStep"),
-        e=localStorage.getItem("screenshotFormat");
-    a&&(settings.seekStep=parseInt(a,10));
-    b&&(settings.seekLongStep=parseInt(b,10));
-    c&&(settings.volumeStep=parseInt(c,10));
-    d&&(settings.speedStep=parseFloat(d));
-    e&&(settings.screenshotFormat=e);
+    let a = localStorage.getItem("seekStep"),
+        b = localStorage.getItem("seekLongStep"),
+        c = localStorage.getItem("volumeStep"),
+        d = localStorage.getItem("speedStep"),
+        e = localStorage.getItem("screenshotFormat");
+    a && (settings.seekStep         = parseInt(a,10));
+    b && (settings.seekLongStep     = parseInt(b,10));
+    c && (settings.volumeStep       = parseInt(c,10));
+    d && (settings.speedStep        = parseFloat(d));
+    e && (settings.screenshotFormat = e);
     Settings.initInputValues()
   }
   
@@ -648,17 +658,20 @@ class Settings
 
   static save(a, b)
   {
-    settings[a]=b;
+    settings[a] = b;
     if(extensionMode)
     {
-      let c={};c[a]=b;chrome.storage.sync.set(c)
-    }else
+      let c = {};
+      c[a] = b;
+      chrome.storage.sync.set(c)
+    } else {
       try
       {
-        localStorage.setItem(a,b)
-      }catch(c){
-        console.log("localStorage error:",c)
+        localStorage.setItem(a, b)
+      } catch(c) {
+        console.log("localStorage error:", c)
       }
+    }
   }
 
   static saveSeekStep(a)
@@ -693,9 +706,11 @@ class I18N
 {
   static init()
   {
-    let a=document.querySelectorAll("[data-i18n]");
-    for(const b of a)
-      b.textContent=Messages[b.dataset.i18n]
+    let a = document.querySelectorAll("[data-i18n]");
+    for (const b of a)
+    {
+      b.textContent = Messages[b.dataset.i18n];
+    }
   }
 }
 
