@@ -39,7 +39,7 @@ class Utils
 {
   static delay(a,b)
   {
-    let c=0;
+    let c = 0;
     return function(...d)
     {
       clearTimeout(c);
@@ -116,9 +116,15 @@ class Clock
 
   static toggleClockTime()
   {
-    rtInfo.classList.contains("d-none")
-    ? (Clock.updateClockTime(),rtInfo.classList.remove("d-none"),Clock.clockTimer=setInterval(Clock.updateClockTime,1E3))
-    : (rtInfo.classList.add("d-none"),clearInterval(Clock.clockTimer))
+    if (rtInfo.classList.contains("d-none"))
+    {
+      Clock.updateClockTime(),
+      rtInfo.classList.remove("d-none"),
+      Clock.clockTimer = setInterval(Clock.updateClockTime, 1000)
+    } else {
+      rtInfo.classList.add("d-none");
+      clearInterval(Clock.clockTimer);
+    }
   }
 
   static updateClockTime()
@@ -375,9 +381,17 @@ class Controls
 
   static onPlayerClick(a)
   {
-    0 < clickDblclickTimer
-    ? (clearTimeout(clickDblclickTimer),clickDblclickTimer=0,WindowManager.toggleFullscreen())
-    : clickDblclickTimer=setTimeout(function(){clickDblclickTimer=0;Player.togglePlay()},400)
+    if (0 < clickDblclickTimer)
+    {
+      clearTimeout(clickDblclickTimer);
+      clickDblclickTimer = 0;
+      WindowManager.toggleFullscreen();
+    } else {
+      clickDblclickTimer = setTimeout(function() {
+        clickDblclickTimer = 0;
+        Player.togglePlay();
+      },400);
+    }
   }
 
   static onMouseMove(a)
@@ -389,7 +403,7 @@ class Controls
     let b = 1500;
     "player" == a ? b = 1500 : 
     "controls" == a ? b = 4500 :
-    "settings" == a && (b = 2E4);
+    "settings" == a && (b = 20000);
     mouseMoveTimer = setTimeout(Controls.hide, b)
   }
 
@@ -465,7 +479,7 @@ class FileManager
 
   static hasPreviousNext()
   {
-    return [0<FileManager.playIndex, FileManager.playIndex < fileList.length - 1]
+    return [0 < FileManager.playIndex, FileManager.playIndex < fileList.length - 1]
   }
 
   static openFiles()
@@ -512,7 +526,9 @@ class FileManager
     0 == dragTimer &&
     (
       FileManager.toggleDropzone(true),
-      dragTimer = setInterval(function(){200<performance.now()-lastDragTime&&FileManager.dragEnd()},200)
+      dragTimer = setInterval(function() {
+        200 < performance.now() - lastDragTime && FileManager.dragEnd()
+      }, 200);
     )
   }
 
@@ -663,25 +679,31 @@ class Settings
     {
       let c = {};
       c[a] = b;
-      chrome.storage.sync.set(c)
+      chrome.storage.sync.set(c);
     } else {
       try
       {
-        localStorage.setItem(a, b)
+        localStorage.setItem(a, b);
       } catch(c) {
-        console.log("localStorage error:", c)
+        console.log("localStorage error:", c);
       }
     }
   }
 
   static saveSeekStep(a)
   {
-    1 <= seekStepInput.valueAsNumber && Settings.save("seekStep", seekStepInput.valueAsNumber);
+    if (1 <= seekStepInput.valueAsNumber)
+    {
+      Settings.save("seekStep", seekStepInput.valueAsNumber);
+    }
   }
 
   static saveSeekLongStep(a)
   {
-    1 <= seekLongStepInput.valueAsNumber && Settings.save("seekLongStep", seekLongStepInput.valueAsNumber);
+    if (1 <= seekLongStepInput.valueAsNumber)
+    {
+      Settings.save("seekLongStep", seekLongStepInput.valueAsNumber);
+    }
   }
 
   static saveVolumeStep(a)
