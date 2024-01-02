@@ -37,7 +37,7 @@ var settings=
 
 class Utils
 {
-  static delay(a,b)
+  static delay(a, b)
   {
     let c = 0;
     return function(...d)
@@ -167,6 +167,7 @@ class Player
   static stop()
   {
     video.removeAttribute("src");
+    //////////////////////////////////////////////////
     video.load()
   }
 
@@ -203,7 +204,13 @@ class Player
   static toggleMute()
   {
     video.muted = !video.muted;
-    Utils.showInfo(video.muted ? Messages.muted : Messages.unmuted)
+    //////////////////////////////////////////////////
+    if (video.muted)
+    {
+      Utils.showInfo(Messages.muted);
+    } else {
+      Utils.showInfo(Messages.unmuted);
+    }
   }
 
   static seek(a, b)
@@ -303,6 +310,7 @@ class Controls
   static changeTimeMode()
   {
     remainingTimeMode = !remainingTimeMode;
+    //////////////////////////////////////////////////
     Controls.updateTime()
   }
 
@@ -319,7 +327,9 @@ class Controls
   static onLoadedmetadata()
   {
     document.fullscreenElement || WindowManager.scaleSize(1);
+    //////////////////////////////////////////////////
     progress.max = video.duration;
+    //////////////////////////////////////////////////
     Controls.updateTime();
   }
 
@@ -335,12 +345,17 @@ class Controls
 
   static onFullscreenChange()
   {
-    fullscreenBtn.src = document.fullscreenElement ? "img/fullscreen_exit.svg" : "img/fullscreen.svg";
+    if (document.fullscreenElement) {
+      fullscreenBtn.src = "img/fullscreen_exit.svg";
+    } else {
+      fullscreenBtn.src = "img/fullscreen.svg";
+    }
   }
 
   static onVideoChange()
   {
     const [a, b] = FileManager.hasPreviousNext();
+    //////////////////////////////////////////////////
     a
     ? previousBtn.classList.remove("disabled")
     : previousBtn.classList.add("disabled");
@@ -352,13 +367,16 @@ class Controls
   static onProgressChange()
   {
     Controls.progressDragging = false;
+    //////////////////////////////////////////////////
     video.currentTime = progress.value;
+    //////////////////////////////////////////////////
     progress.blur();
   }
 
   static onProgressInput()
   {
     Controls.progressDragging = true;
+    //////////////////////////////////////////////////
     Controls.updateTime();
   }
 
@@ -370,8 +388,13 @@ class Controls
   static onVolumeChange()
   {
     const a = video.volume;
+    //////////////////////////////////////////////////
     volume.value = a;
-    volumeBtn.src = video.muted ? "img/volume_off.svg" : .5 < a ? "img/volume_up.svg" : 0 < a ? "img/volume_down.svg" : "img/volume_mute.svg"
+    //////////////////////////////////////////////////
+         if (video.muted) { volumeBtn.src = "img/volume_off.svg" ; }
+    else if (0.5 < a)     { volumeBtn.src = "img/volume_up.svg"  ; }
+    else if (0 < a)       { volumeBtn.src = "img/volume_down.svg"; }
+    else                  { volumeBtn.src = "img/volume_mute.svg"  }
   }
 
   static onVideoEnd()
@@ -410,7 +433,9 @@ class Controls
   static show()
   {
     Controls.hidden = false;
+    //////////////////////////////////////////////////
     Controls.updateTime();
+    //////////////////////////////////////////////////
     controlsPanel.classList.remove("d-none");
     playerPanel.classList.remove("hide-cursor");
   }
@@ -418,41 +443,42 @@ class Controls
   static hide()
   {
     Controls.hidden = true;
+    //////////////////////////////////////////////////
     controlsPanel.classList.add("d-none");
     playerPanel.classList.add("hide-cursor");
   }
 
   static async keyboardListener(a)
   {
-    var b=a.target.tagName;
-    if("INPUT"!==b&&"SELECT"!==b)
+    var b = a.target.tagName;
+    if ("INPUT" !== b && "SELECT" !== b)
     {
-      b=a.keyCode;
-      var c=a.code;
-      79===b&&(a.ctrlKey||a.metaKey)?(a.preventDefault(),FileManager.openFiles()):
-      37===b&&(a.ctrlKey||a.metaKey)?(a.preventDefault(),Player.playPrevious()):
-      39===b&&(a.ctrlKey||a.metaKey)?(a.preventDefault(),Player.playNext()):
-      83!==b||!a.ctrlKey&&!a.metaKey||a.shiftKey?a.ctrlKey||a.altKey||a.metaKey||
+      b = a.keyCode;
+      var c = a.code;
+      79 === b && (a.ctrlKey||a.metaKey) ? (a.preventDefault(), FileManager.openFiles()):
+      37 === b && (a.ctrlKey||a.metaKey) ? (a.preventDefault(), Player.playPrevious()):
+      39 === b && (a.ctrlKey||a.metaKey) ? (a.preventDefault(), Player.playNext()):
+      83 !== b || !a.ctrlKey&&!a.metaKey||a.shiftKey?a.ctrlKey||a.altKey||a.metaKey||
       (70===b?(a.preventDefault(),WindowManager.toggleFullscreen()):
-      87===b?(a.preventDefault(),WindowManager.toggleMaxSize()):
-      84===b?a.preventDefault():
-      75===b||32===b?(a.preventDefault(),Player.togglePlay()):
-      74===b||37===b?(a.preventDefault(),a.shiftKey?Player.seek(false,settings.seekLongStep):Player.seek(false,settings.seekStep)):
-      76===b||39===b?(a.preventDefault(),a.shiftKey?Player.seek(true,settings.seekLongStep):Player.seek(true,settings.seekStep)):
-      38===b?(a.preventDefault(),Player.volume(true,settings.volumeStep)):
-      40===b?(a.preventDefault(),Player.volume(false,settings.volumeStep)):
+      87 === b ?(a.preventDefault(),WindowManager.toggleMaxSize()):
+      84 === b ?a.preventDefault():
+      75 === b ||32===b?(a.preventDefault(),Player.togglePlay()):
+      74 === b ||37===b?(a.preventDefault(),a.shiftKey?Player.seek(false,settings.seekLongStep):Player.seek(false,settings.seekStep)):
+      76 === b ||39===b?(a.preventDefault(),a.shiftKey?Player.seek(true,settings.seekLongStep):Player.seek(true,settings.seekStep)):
+      38 === b ?(a.preventDefault(),Player.volume(true,settings.volumeStep)):
+      40 === b ?(a.preventDefault(),Player.volume(false,settings.volumeStep)):
       "Equal"===c?(a.preventDefault(),a.shiftKey?WindowManager.scale(true):Player.speed(true,settings.speedStep)):
       "Minus"===c?(a.preventDefault(),a.shiftKey?WindowManager.scale(false):Player.speed(false,settings.speedStep)):
       "Digit0"===c?(a.preventDefault(),a.shiftKey?WindowManager.scaleSize(1):Player.resetSpeed()):
-      67===b?a.preventDefault():78===b?(a.preventDefault(),Player.playNext()):
-      77===b?(a.preventDefault(),Player.toggleMute()):
-      80===b?(a.preventDefault(),a.shiftKey?WindowManager.togglePip():Player.playPrevious()):
-      188===b?(a.preventDefault(),Player.seek(false,.042)):
-      190===b?(a.preventDefault(),Player.seek(true,.042)):
-      83===b&&a.shiftKey?(a.preventDefault(),Utils.screenshot()):
-      71===b?(a.preventDefault(),Player.toggleVideoTime()):
-      72===b?(a.preventDefault(),Clock.toggleClockTime()):
-      66===b&&a.preventDefault()):a.preventDefault()
+       67 === b?a.preventDefault():78===b?(a.preventDefault(),Player.playNext()):
+       77 === b?(a.preventDefault(),Player.toggleMute()):
+       80 === b?(a.preventDefault(),a.shiftKey?WindowManager.togglePip():Player.playPrevious()):
+      188 === b?(a.preventDefault(),Player.seek(false,.042)):
+      190 === b?(a.preventDefault(),Player.seek(true,.042)):
+       83 === b&&a.shiftKey?(a.preventDefault(),Utils.screenshot()):
+       71 === b?(a.preventDefault(),Player.toggleVideoTime()):
+       72 === b?(a.preventDefault(),Clock.toggleClockTime()):
+       66 === b&&a.preventDefault()):a.preventDefault()
     }
   }
 }
@@ -489,16 +515,20 @@ class FileManager
 
   static updateFileList(a)
   {
-    0 < a.length && (
-      fileList=Array.from(a),
-      FileManager.playIndex=0,
-      Player.loadFile(fileList[0])
-    )
+    if (0 < a.length)
+    {
+      fileList = Array.from(a);
+      //////////////////////////////////////////////////
+      FileManager.playIndex = 0;
+      //////////////////////////////////////////////////
+      Player.loadFile(fileList[0]);
+    }
   }
 
   static onSelectFile(a)
   {
     FileManager.updateFileList(this.files);
+    //////////////////////////////////////////////////
     this.value = null;
   }
 
@@ -513,8 +543,8 @@ class FileManager
 
   static dragEnd()
   {
-    clearInterval(dragTimer);
-    dragTimer = 0;
+    clearInterval(dragTimer = 0);
+    //////////////////////////////////////////////////
     FileManager.toggleDropzone(false);
   }
 
@@ -560,13 +590,19 @@ class WindowManager
 
   static restoreState()
   {
-    let a = WindowManager.state;
-    a && (window.resizeTo(a.width, a.height), window.moveTo(a.x, a.y))
+    let state = WindowManager.state;
+    //////////////////////////////////////////////////
+    if (state)
+    {
+      window.resizeTo(state.width, state.height)
+      //////////////////////////////////////////////////
+      window.moveTo(state.x, state.y);
+    }
   }
 
   static getBrowserHeadHeight()
   {
-    if(void 0 !== WindowManager.browserHeadHeight)
+    if (void 0 !== WindowManager.browserHeadHeight)
       return WindowManager.browserHeadHeight;
     let a = window.outerHeight - window.innerHeight;
     return 0 < a ? WindowManager.browserHeadHeight = a : 28
@@ -607,11 +643,15 @@ class WindowManager
 
   static toggleMaxSize()
   {
-    popupWindow && (
-      WindowManager.isMaxSize()
-      ? WindowManager.restoreState()
-      : window.resizeTo(window.screen.availWidth, window.screen.availHeight)
-    )
+    if (popupWindow)
+    {
+      if (WindowManager.isMaxSize())
+      {
+        WindowManager.restoreState();
+      } else {
+        window.resizeTo(window.screen.availWidth, window.screen.availHeight);
+      }
+    }
   }
 
   static async togglePip()
@@ -627,15 +667,25 @@ class WindowManager
 
   static async toggleFullscreen()
   {
-    document.pictureInPictureElement && await document.exitPictureInPicture();
-    document.fullscreenElement
-    ? document.exitFullscreen()
-    : playerPanel.requestFullscreen()
+    if (document.pictureInPictureElement)
+    {
+      await document.exitPictureInPicture();
+    }
+    //////////////////////////////////////////////////
+    if (document.fullscreenElement)
+    {
+      document.exitFullscreen();
+    } else {
+      playerPanel.requestFullscreen();
+    }
   }
 
   static exitFullscreen()
   {
-    document.fullscreenElement && document.exitFullscreen();
+    if (document.fullscreenElement)
+    {
+      document.exitFullscreen();
+    }
   }
 }
 
