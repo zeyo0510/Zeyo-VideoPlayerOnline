@@ -1,37 +1,38 @@
 var extensionMode;
 
-const popupWindow=!0,
-video=document.getElementById("video"),
-playerPanel=document.getElementById("player");
+const popupWindow = true,
+      video = document.getElementById("video"),
+      playerPanel = document.getElementById("player");
 
 let fileList=[];
-const info=document.getElementById("info"),
-      errorInfo=document.getElementById("error-info"),
-      ltInfo=document.getElementById("lt-info"),
-      rtInfo=document.getElementById("rt-info"),
-      controlsPanel=document.getElementById("controls"),
-      progress=document.getElementById("progress"),
-      volume=document.getElementById("volume"),
-      [leftTime,rightTime]=document.querySelectorAll("#progress-controls .time"),
-      [openFileBtn,volumeBtn]=document.querySelectorAll("#buttons-left .btn"),
-      [previousBtn,rewindBtn,playBtn,forwardBtn,nextBtn]=document.querySelectorAll("#buttons-center .btn"),
-      [settingsBtn,fullscreenBtn]=document.querySelectorAll("#buttons-right .btn");
+const info                                               = document.getElementById("info"),
+      errorInfo                                          = document.getElementById("error-info"),
+      ltInfo                                             = document.getElementById("lt-info"),
+      rtInfo                                             = document.getElementById("rt-info"),
+      controlsPanel                                      = document.getElementById("controls"),
+      progress                                           = document.getElementById("progress"),
+      volume                                             = document.getElementById("volume"),
+      [leftTime,rightTime]                               = document.querySelectorAll("#progress-controls .time"),
+      [openFileBtn,volumeBtn]                            = document.querySelectorAll("#buttons-left .btn"),
+      [previousBtn,rewindBtn,playBtn,forwardBtn,nextBtn] = document.querySelectorAll("#buttons-center .btn"),
+      [settingsBtn,fullscreenBtn]                        = document.querySelectorAll("#buttons-right .btn");
 
-let remainingTimeMode=!1;
-const seekStepInput=document.getElementById("seekStep"),
-      seekLongStepInput=document.getElementById("seekLongStep"),
-      volumeStepInput=document.getElementById("volumeStep"),
-      speedStepInput=document.getElementById("speedStep"),
-      screenshotFormatInput=document.getElementById("screenshotFormat");
+let remainingTimeMode = false;
+const seekStepInput         = document.getElementById("seekStep"),
+      seekLongStepInput     = document.getElementById("seekLongStep"),
+      volumeStepInput       = document.getElementById("volumeStep"),
+      speedStepInput        = document.getElementById("speedStep"),
+      screenshotFormatInput = document.getElementById("screenshotFormat");
+
 var settings=
 {
-  seekStep:5,
-  seekLongStep:30,
-  volumeStep:10,
-  speedStep:.25,
-  timeFormatHour12:!0,
-  timeFormatSecond:!1,
-  screenshotFormat:"jpg"
+  seekStep         : 5
+, seekLongStep     : 30
+, volumeStep       : 10
+, speedStep        : .25
+, timeFormatHour12 : true
+, timeFormatSecond : false
+, screenshotFormat : "jpg"
 };
 
 class Utils
@@ -41,30 +42,33 @@ class Utils
     let c=0;
     return function(...d)
     {
-      clearTimeout(c);c=setTimeout(a.bind(this,...d),b)
+      clearTimeout(c);
+      c = setTimeout(a.bind(this, ...d), b);
     }
   }
 
   static showInfo(a)
   {
-    info.textContent=a;
+    info.textContent = a;
     info.classList.remove("d-none");
-    Utils.delayHideInfo()
+    Utils.delayHideInfo();
   }
 
   static hideInfo()
   {
-    info.classList.add("d-none")
+    info.classList.add("d-none");
   }
 
   static showError(a)
   {
-    errorInfo.textContent=a;errorInfo.classList.remove("d-none");Utils.delayHideError()
+    errorInfo.textContent = a;
+    errorInfo.classList.remove("d-none");
+    Utils.delayHideError();
   }
 
   static hideError()
   {
-    errorInfo.classList.add("d-none")
+    errorInfo.classList.add("d-none");
   }
 
   static formatTime(a)
@@ -94,8 +98,8 @@ class Utils
   }
 }
 
-Utils.delayHideInfo=Utils.delay(Utils.hideInfo,1500);
-Utils.delayHideError=Utils.delay(Utils.hideError,1500);
+Utils.delayHideInfo  = Utils.delay(Utils.hideInfo, 1500);
+Utils.delayHideError = Utils.delay(Utils.hideError, 1500);
 
 class Clock
 {
@@ -109,13 +113,13 @@ class Clock
   static toggleClockTime()
   {
     rtInfo.classList.contains("d-none")
-    ?(Clock.updateClockTime(),rtInfo.classList.remove("d-none"),Clock.clockTimer=setInterval(Clock.updateClockTime,1E3))
-    :(rtInfo.classList.add("d-none"),clearInterval(Clock.clockTimer))
+    ? (Clock.updateClockTime(),rtInfo.classList.remove("d-none"),Clock.clockTimer=setInterval(Clock.updateClockTime,1E3))
+    : (rtInfo.classList.add("d-none"),clearInterval(Clock.clockTimer))
   }
 
   static updateClockTime()
   {
-    rtInfo.textContent=Clock.ClockFormat.format(new Date)
+    rtInfo.textContent = Clock.ClockFormat.format(new Date);
   }
 }
 
@@ -136,16 +140,16 @@ class Player
     if(void 0===a.canPlay)
       try
       {
-        await video.play(),a.canPlay=!0
+        await video.play(),a.canPlay=true
       }catch(b){
-        a.canPlay=!1,
+        a.canPlay=false,
         Player.stop(),
         "NotSupportedError"==b.name
         ?Utils.showError(Messages.cannotSupportFormat)
         :Utils.showError(Messages.error)
       }
     else
-      !0===a.canPlay&&Player.play();
+      true===a.canPlay&&Player.play();
     Controls.onVideoChange()
   }
 
@@ -158,24 +162,26 @@ class Player
   static async play()
   {
     if(video.src)
+    {
       try
       {
-        await video.play()
+        await video.play();
       }catch(a){
-        Utils.showError(Messages.error)
+        Utils.showError(Messages.error);
       }
+    }
   }
 
   static playNext()
   {
-    let a=FileManager.getNextFile(!0);
-    return a?(Player.loadFile(a),!0):!1
+    let a = FileManager.getNextFile(true);
+    return a ? (Player.loadFile(a),true) : false
   }
 
   static playPrevious()
   {
-    let a=FileManager.getNextFile(!1);
-    return a?(Player.loadFile(a),!0):!1
+    let a = FileManager.getNextFile(false);
+    return a ? (Player.loadFile(a),true) : false
   }
 
   static togglePlay()
@@ -208,9 +214,9 @@ class Player
 
   static speed(a,b)
   {
-    a=a?parseFloat((video.playbackRate+b).toFixed(2)):parseFloat((video.playbackRate-b).toFixed(2));
-    .25<=a&&5>=a&&(video.playbackRate=a);
-    Utils.showInfo(Messages.speedIs+video.playbackRate)
+    a = a ? parseFloat((video.playbackRate + b).toFixed(2)) : parseFloat((video.playbackRate - b).toFixed(2));
+    .25 <= a && 5 >= a && (video.playbackRate = a);
+    Utils.showInfo(Messages.speedIs + video.playbackRate)
   }
 
   static resetSpeed()
@@ -245,7 +251,7 @@ class Controls
   {
     document.body.addEventListener("keydown",Controls.keyboardListener);
     document.addEventListener("fullscreenchange",Controls.onFullscreenChange);
-    Controls.progressDragging=!1;
+    Controls.progressDragging=false;
     video.addEventListener("loadedmetadata",Controls.onLoadedmetadata);
     video.addEventListener("timeupdate",Controls.updateTime);
     video.addEventListener("volumechange",Controls.onVolumeChange);
@@ -262,20 +268,20 @@ class Controls
     volume.addEventListener("input",Controls.onVolumeInput);
     volume.addEventListener("change",a=>volume.blur());
     previousBtn.addEventListener("click",Player.playPrevious);
-    rewindBtn.addEventListener("click",a=>Player.seek(!1,settings.seekStep));
+    rewindBtn.addEventListener("click",a=>Player.seek(false,settings.seekStep));
     playBtn.addEventListener("click",Player.togglePlay);
-    forwardBtn.addEventListener("click",a=>Player.seek(!0,settings.seekStep));
+    forwardBtn.addEventListener("click",a=>Player.seek(true,settings.seekStep));
     nextBtn.addEventListener("click",Player.playNext);
     fullscreenBtn.addEventListener("click",WindowManager.toggleFullscreen);
     "mediaSession"in navigator&&
     (
       navigator.mediaSession.setActionHandler("previoustrack",Player.playPrevious),
       navigator.mediaSession.setActionHandler("nexttrack",Player.playNext),
-      navigator.mediaSession.setActionHandler("seekbackward",()=>Player.seek(!1,settings.seekStep)),
-      navigator.mediaSession.setActionHandler("seekforward",()=>Player.seek(!0,settings.seekStep))
+      navigator.mediaSession.setActionHandler("seekbackward",()=>Player.seek(false,settings.seekStep)),
+      navigator.mediaSession.setActionHandler("seekforward",()=>Player.seek(true,settings.seekStep))
     );
     document.body.addEventListener("contextmenu",a=>a.preventDefault());
-    Controls.hidden=!0;
+    Controls.hidden=true;
     document.getElementById("settings").addEventListener("mousemove",Controls.onMouseMove);
     controlsPanel.addEventListener("mousemove",Controls.onMouseMove);
     playerPanel.addEventListener("mousemove",Controls.onMouseMove)
@@ -289,11 +295,11 @@ class Controls
 
   static updateTime()
   {
-    Controls.hidden||0===video.readyState||
+    Controls.hidden || 0 === video.readyState ||
     (
       Controls.progressDragging
-      ?(leftTime.textContent=Utils.formatTime(progress.value),remainingTimeMode&&(rightTime.textContent="-"+Utils.formatTime(video.duration-progress.value)))
-      :(progress.value=video.currentTime,leftTime.textContent=Utils.formatTime(video.currentTime),rightTime.textContent=remainingTimeMode?"-"+Utils.formatTime(video.duration-video.currentTime):Utils.formatTime(video.duration))
+      ? (leftTime.textContent=Utils.formatTime(progress.value),remainingTimeMode&&(rightTime.textContent="-"+Utils.formatTime(video.duration-progress.value)))
+      : (progress.value=video.currentTime,leftTime.textContent=Utils.formatTime(video.currentTime),rightTime.textContent=remainingTimeMode?"-"+Utils.formatTime(video.duration-video.currentTime):Utils.formatTime(video.duration))
     )
   }
 
@@ -301,22 +307,22 @@ class Controls
   {
     document.fullscreenElement||WindowManager.scaleSize(1);
     progress.max=video.duration;
-    Controls.updateTime()
+    Controls.updateTime();
   }
 
   static onPause()
   {
-    playBtn.src="img/play_arrow.svg"
+    playBtn.src = "img/play_arrow.svg";
   }
 
   static onPlay()
   {
-    playBtn.src="img/pause.svg"
+    playBtn.src = "img/pause.svg";
   }
 
   static onFullscreenChange()
   {
-    fullscreenBtn.src=document.fullscreenElement?"img/fullscreen_exit.svg":"img/fullscreen.svg"
+    fullscreenBtn.src = document.fullscreenElement ? "img/fullscreen_exit.svg" : "img/fullscreen.svg";
   }
 
   static onVideoChange()
@@ -332,39 +338,39 @@ class Controls
 
   static onProgressChange()
   {
-    Controls.progressDragging=!1;
-    video.currentTime=progress.value;
-    progress.blur()
+    Controls.progressDragging = false;
+    video.currentTime = progress.value;
+    progress.blur();
   }
 
   static onProgressInput()
   {
-    Controls.progressDragging=!0;
-    Controls.updateTime()
+    Controls.progressDragging = true;
+    Controls.updateTime();
   }
 
   static onVolumeInput()
   {
-    video.volume=volume.valueAsNumber
+    video.volume = volume.valueAsNumber;
   }
 
   static onVolumeChange()
   {
-    const a=video.volume;
-    volume.value=a;
-    volumeBtn.src=video.muted?"img/volume_off.svg":.5<a?"img/volume_up.svg":0<a?"img/volume_down.svg":"img/volume_mute.svg"
+    const a = video.volume;
+    volume.value = a;
+    volumeBtn.src = video.muted ? "img/volume_off.svg" : .5 < a ? "img/volume_up.svg" : 0 < a ? "img/volume_down.svg" : "img/volume_mute.svg"
   }
 
   static onVideoEnd()
   {
-    Player.playNext()||WindowManager.exitFullscreen()
+    Player.playNext() || WindowManager.exitFullscreen()
   }
 
   static onPlayerClick(a)
   {
-    0<clickDblclickTimer
-    ?(clearTimeout(clickDblclickTimer),clickDblclickTimer=0,WindowManager.toggleFullscreen())
-    :clickDblclickTimer=setTimeout(function(){clickDblclickTimer=0;Player.togglePlay()},400)
+    0 < clickDblclickTimer
+    ? (clearTimeout(clickDblclickTimer),clickDblclickTimer=0,WindowManager.toggleFullscreen())
+    : clickDblclickTimer=setTimeout(function(){clickDblclickTimer=0;Player.togglePlay()},400)
   }
 
   static onMouseMove(a)
@@ -373,26 +379,26 @@ class Controls
     Controls.hidden&&Controls.show();
     clearTimeout(mouseMoveTimer);
     a=a.currentTarget.id;
-    let b=1500;
-    "player"==a?b=1500:
-    "controls"==a?b=4500:
-    "settings"==a&&(b=2E4);
-    mouseMoveTimer=setTimeout(Controls.hide,b)
+    let b = 1500;
+    "player" == a ? b = 1500 : 
+    "controls" == a ? b = 4500:
+    "settings" == a && (b = 2E4);
+    mouseMoveTimer = setTimeout(Controls.hide, b)
   }
 
   static show()
   {
-    Controls.hidden=!1;
+    Controls.hidden = false;
     Controls.updateTime();
     controlsPanel.classList.remove("d-none");
-    playerPanel.classList.remove("hide-cursor")
+    playerPanel.classList.remove("hide-cursor");
   }
 
   static hide()
   {
-    Controls.hidden=!0;
+    Controls.hidden = true;
     controlsPanel.classList.add("d-none");
-    playerPanel.classList.add("hide-cursor")
+    playerPanel.classList.add("hide-cursor");
   }
 
   static async keyboardListener(a)
@@ -410,18 +416,18 @@ class Controls
       87===b?(a.preventDefault(),WindowManager.toggleMaxSize()):
       84===b?a.preventDefault():
       75===b||32===b?(a.preventDefault(),Player.togglePlay()):
-      74===b||37===b?(a.preventDefault(),a.shiftKey?Player.seek(!1,settings.seekLongStep):Player.seek(!1,settings.seekStep)):
-      76===b||39===b?(a.preventDefault(),a.shiftKey?Player.seek(!0,settings.seekLongStep):Player.seek(!0,settings.seekStep)):
-      38===b?(a.preventDefault(),Player.volume(!0,settings.volumeStep)):
-      40===b?(a.preventDefault(),Player.volume(!1,settings.volumeStep)):
-      "Equal"===c?(a.preventDefault(),a.shiftKey?WindowManager.scale(!0):Player.speed(!0,settings.speedStep)):
-      "Minus"===c?(a.preventDefault(),a.shiftKey?WindowManager.scale(!1):Player.speed(!1,settings.speedStep)):
+      74===b||37===b?(a.preventDefault(),a.shiftKey?Player.seek(false,settings.seekLongStep):Player.seek(false,settings.seekStep)):
+      76===b||39===b?(a.preventDefault(),a.shiftKey?Player.seek(true,settings.seekLongStep):Player.seek(true,settings.seekStep)):
+      38===b?(a.preventDefault(),Player.volume(true,settings.volumeStep)):
+      40===b?(a.preventDefault(),Player.volume(false,settings.volumeStep)):
+      "Equal"===c?(a.preventDefault(),a.shiftKey?WindowManager.scale(true):Player.speed(true,settings.speedStep)):
+      "Minus"===c?(a.preventDefault(),a.shiftKey?WindowManager.scale(false):Player.speed(false,settings.speedStep)):
       "Digit0"===c?(a.preventDefault(),a.shiftKey?WindowManager.scaleSize(1):Player.resetSpeed()):
       67===b?a.preventDefault():78===b?(a.preventDefault(),Player.playNext()):
       77===b?(a.preventDefault(),Player.toggleMute()):
       80===b?(a.preventDefault(),a.shiftKey?WindowManager.togglePip():Player.playPrevious()):
-      188===b?(a.preventDefault(),Player.seek(!1,.042)):
-      190===b?(a.preventDefault(),Player.seek(!0,.042)):
+      188===b?(a.preventDefault(),Player.seek(false,.042)):
+      190===b?(a.preventDefault(),Player.seek(true,.042)):
       83===b&&a.shiftKey?(a.preventDefault(),Utils.screenshot()):
       71===b?(a.preventDefault(),Player.toggleVideoTime()):
       72===b?(a.preventDefault(),Clock.toggleClockTime()):
@@ -430,23 +436,24 @@ class Controls
   }
 }
 
-var lastDragTime=0,
-    dragTimer=0;
+var lastDragTime = 0,
+    dragTimer = 0;
 
-    class FileManager
+class FileManager
 {
   static init()
   {
-    FileManager.playIndex=0;
-    FileManager.inputFile=document.getElementById("file");
-    FileManager.inputFile.addEventListener("change",FileManager.onSelectFile);
-    document.body.addEventListener("dragover",FileManager.onDropOver);
-    document.body.addEventListener("drop",FileManager.onDrop)
+    FileManager.playIndex = 0;
+    FileManager.inputFile = document.getElementById("file");
+    FileManager.inputFile.addEventListener("change", FileManager.onSelectFile);
+    document.body.addEventListener("dragover", FileManager.onDropOver);
+    document.body.addEventListener("drop", FileManager.onDrop);
   }
   
   static getNextFile(a)
   {
-    a=a?FileManager.playIndex+1:FileManager.playIndex-1;return 0<=a&&a<fileList.length?(FileManager.playIndex=a,fileList[a]):null
+    a=a?FileManager.playIndex+1:FileManager.playIndex-1;
+    return 0<=a&&a<fileList.length?(FileManager.playIndex=a,fileList[a]):null
   }
 
   static hasPreviousNext()
@@ -461,7 +468,11 @@ var lastDragTime=0,
 
   static updateFileList(a)
   {
-    0<a.length&&(fileList=Array.from(a),FileManager.playIndex=0,Player.loadFile(fileList[0]))
+    0 < a.length && (
+      fileList=Array.from(a),
+      FileManager.playIndex=0,
+      Player.loadFile(fileList[0])
+    )
   }
 
   static onSelectFile(a)
@@ -471,28 +482,29 @@ var lastDragTime=0,
 
   static toggleDropzone(a)
   {
-    let b=document.body.firstElementChild,
-        c=b.nextElementSibling;
+    let b = document.body.firstElementChild,
+        c = b.nextElementSibling;
     a
-    ?(b.classList.add("d-none"),c.classList.remove("d-none"))
-    :(b.classList.remove("d-none"),c.classList.add("d-none"))
+    ? (b.classList.add("d-none")   ,c.classList.remove("d-none"))
+    : (b.classList.remove("d-none"),c.classList.add("d-none")   )
   }
 
   static dragEnd()
   {
     clearInterval(dragTimer);
-    dragTimer=0;FileManager.toggleDropzone(!1)
+    dragTimer=0;
+    FileManager.toggleDropzone(false);
   }
 
   static onDropOver(a)
   {
     a.preventDefault();
-    a.dataTransfer.dropEffect="move";
-    lastDragTime=performance.now();
-    0==dragTimer&&
+    a.dataTransfer.dropEffect = "move";
+    lastDragTime = performance.now();
+    0 == dragTimer &&
     (
-      FileManager.toggleDropzone(!0),
-      dragTimer=setInterval(function(){200<performance.now()-lastDragTime&&FileManager.dragEnd()},200)
+      FileManager.toggleDropzone(true),
+      dragTimer = setInterval(function(){200<performance.now()-lastDragTime&&FileManager.dragEnd()},200)
     )
   }
 
@@ -513,13 +525,19 @@ class WindowManager
   
   static saveWindowState()
   {
-    WindowManager.state={x:window.screenX,y:window.screenY,width:window.outerWidth,height:window.outerHeight}
+    WindowManager.state =
+    {
+      x      : window.screenX
+    , y      : window.screenY
+    , width  : window.outerWidth
+    , height : window.outerHeight
+    }
   }
 
   static restoreState()
   {
-    let a=WindowManager.state;
-    a&&(window.resizeTo(a.width,a.height),window.moveTo(a.x,a.y))
+    let a = WindowManager.state;
+    a && (window.resizeTo(a.width, a.height), window.moveTo(a.x, a.y))
   }
 
   static getBrowserHeadHeight()
@@ -532,7 +550,7 @@ class WindowManager
 
   static scaleSize(a)
   {
-    if(popupWindow&&0<video.videoWidth&&0<video.videoHeight)
+    if (popupWindow && 0 < video.videoWidth && 0 < video.videoHeight)
     {
       var b=WindowManager.getBrowserHeadHeight();
       const c=video.videoWidth/video.videoHeight;
@@ -548,7 +566,7 @@ class WindowManager
 
   static scale(a)
   {
-    popupWindow&&0<video.videoWidth&&0<video.videoHeight&&
+    popupWindow && 0 < video.videoWidth && 0 < video.videoHeight &&
     (
       a
       ?a=(window.innerWidth+video.videoWidth/4)/video.videoWidth
@@ -559,36 +577,39 @@ class WindowManager
 
   static isMaxSize()
   {
-    return window.outerWidth==window.screen.availWidth&&window.outerHeight==window.screen.availHeight
+    return window.outerWidth  == window.screen.availWidth
+    &&     window.outerHeight == window.screen.availHeight
   }
 
   static toggleMaxSize()
   {
-    popupWindow&&(WindowManager.isMaxSize()?WindowManager.restoreState():window.resizeTo(window.screen.availWidth,window.screen.availHeight))
+    popupWindow && (
+      WindowManager.isMaxSize() ? WindowManager.restoreState() : window.resizeTo(window.screen.availWidth, window.screen.availHeight)
+    )
   }
 
   static async togglePip()
   {
-    document.pictureInPictureEnabled&&!video.disablePictureInPicture&&0!==video.readyState&&
+    document.pictureInPictureEnabled && !video.disablePictureInPicture && 0 !== video.readyState &&
     (
-      document.fullscreenElement&&await document.exitFullscreen(),
+      document.fullscreenElement && await document.exitFullscreen(),
       document.pictureInPictureElement
-      ?document.exitPictureInPicture()
-      :video.requestPictureInPicture()
+      ? document.exitPictureInPicture()
+      : video.requestPictureInPicture()
     )
   }
 
   static async toggleFullscreen()
   {
-    document.pictureInPictureElement&&await document.exitPictureInPicture();
+    document.pictureInPictureElement && await document.exitPictureInPicture();
     document.fullscreenElement
-    ?document.exitFullscreen()
-    :playerPanel.requestFullscreen()
+    ? document.exitFullscreen()
+    : playerPanel.requestFullscreen()
   }
 
   static exitFullscreen()
   {
-    document.fullscreenElement&&document.exitFullscreen()
+    document.fullscreenElement && document.exitFullscreen();
   }
 }
 
@@ -618,14 +639,14 @@ class Settings
   
   static initInputValues()
   {
-    seekStepInput.value=settings.seekStep;
-    seekLongStepInput.value=settings.seekLongStep;
-    volumeStepInput.value=settings.volumeStep;
-    speedStepInput.value=settings.speedStep;
-    screenshotFormatInput.value=settings.screenshotFormat
+    seekStepInput.value         = settings.seekStep;
+    seekLongStepInput.value     = settings.seekLongStep;
+    volumeStepInput.value       = settings.volumeStep;
+    speedStepInput.value        = settings.speedStep;
+    screenshotFormatInput.value = settings.screenshotFormat;
   }
-  
-  static save(a,b)
+
+  static save(a, b)
   {
     settings[a]=b;
     if(extensionMode)
@@ -642,29 +663,29 @@ class Settings
 
   static saveSeekStep(a)
   {
-    1<=seekStepInput.valueAsNumber&&Settings.save("seekStep",seekStepInput.valueAsNumber)
+    1 <= seekStepInput.valueAsNumber && Settings.save("seekStep", seekStepInput.valueAsNumber);
   }
 
   static saveSeekLongStep(a)
   {
-    1<=seekLongStepInput.valueAsNumber&&Settings.save("seekLongStep",seekLongStepInput.valueAsNumber)
+    1 <= seekLongStepInput.valueAsNumber && Settings.save("seekLongStep", seekLongStepInput.valueAsNumber);
   }
 
   static saveVolumeStep(a)
   {
-    a=volumeStepInput.valueAsNumber;
-    1<=a&&50>=a&&Settings.save("volumeStep",a)
+    a = volumeStepInput.valueAsNumber;
+    1 <= a && 50 >= a && Settings.save("volumeStep", a);
   }
 
   static saveSpeedStep(a)
   {
-    a=parseFloat(speedStepInput.value);
-    0<a&&1>=a&&Settings.save("speedStep",a)
+    a = parseFloat(speedStepInput.value);
+    0 < a && 1 >= a && Settings.save("speedStep", a);
   }
 
   static saveScreenshotFormat(a)
   {
-    Settings.save("screenshotFormat",screenshotFormatInput.value)
+    Settings.save("screenshotFormat", screenshotFormatInput.value);
   }
 }
 
@@ -678,46 +699,48 @@ class I18N
   }
 }
 
-I18N.en={
-  title:"Video Player",
-  seekStep:"Short Jump",
-  seekLongStep:"Long Jump",
-  volumeStep:"Volume Jump",
-  speedStep:"Speed Jump",
-  screenshotFormat:"Screenshot",
-  shortcuts:"Shortcuts",
-  dropzone:"Drop Video Files Here",
-  muted:"Muted",
-  unmuted:"Unmuted",
-  speedIs:"Speed: ",
-  volumeIs:"Volume: ",
-  error:"Something wrong",
-  cannotSupportFormat:"Can't support this video format"
+I18N.en =
+{
+    title              : "Video Player"
+  , seekStep           : "Short Jump"
+  , seekLongStep       : "Long Jump"
+  , volumeStep         : "Volume Jump"
+  , speedStep          : "Speed Jump"
+  , screenshotFormat   : "Screenshot"
+  , shortcuts          : "Shortcuts"
+  , dropzone           : "Drop Video Files Here"
+  , muted              : "Muted"
+  , unmuted            : "Unmuted"
+  , speedIs            : "Speed: "
+  , volumeIs           : "Volume: "
+  , error              : "Something wrong"
+  , cannotSupportFormat: "Can't support this video format"
 };
 
-I18N["zh-CN"]={
-  title:"\u89c6\u9891\u64ad\u653e\u5668",
-  seekStep:"\u77ed\u5feb\u8fdb",
-  seekLongStep:"\u957f\u5feb\u8fdb",
-  volumeStep:"\u97f3\u91cf+/-",
-  speedStep:"\u500d\u901f+/-",
-  screenshotFormat:"\u622a\u56fe\u683c\u5f0f",
-  shortcuts:"\u5feb\u6377\u952e\u8bf4\u660e",
-  dropzone:"\u62d6\u62fd\u89c6\u9891\u6587\u4ef6\u5230\u8fd9\u91cc",
-  muted:"\u5df2\u9759\u97f3",
-  unmuted:"\u5df2\u53d6\u6d88\u9759\u97f3",
-  speedIs:"\u500d\u901f: ",
-  volumeIs:"\u97f3\u91cf: ",
-  error:"\u51fa\u9519\u4e86",
-  cannotSupportFormat:"\u4e0d\u652f\u6301\u6b64\u89c6\u9891\u683c\u5f0f"
-}
-;
+I18N["zh-CN"] =
+{
+    title               : "\u89c6\u9891\u64ad\u653e\u5668"
+  , seekStep            : "\u77ed\u5feb\u8fdb"
+  , seekLongStep        : "\u957f\u5feb\u8fdb"
+  , volumeStep          : "\u97f3\u91cf+/-"
+  , speedStep           : "\u500d\u901f+/-"
+  , screenshotFormat    : "\u622a\u56fe\u683c\u5f0f"
+  , shortcuts           : "\u5feb\u6377\u952e\u8bf4\u660e"
+  , dropzone            : "\u62d6\u62fd\u89c6\u9891\u6587\u4ef6\u5230\u8fd9\u91cc"
+  , muted               : "\u5df2\u9759\u97f3"
+  , unmuted             : "\u5df2\u53d6\u6d88\u9759\u97f3"
+  , speedIs             : "\u500d\u901f: "
+  , volumeIs            : "\u97f3\u91cf: "
+  , error               : "\u51fa\u9519\u4e86"
+  , cannotSupportFormat : "\u4e0d\u652f\u6301\u6b64\u89c6\u9891\u683c\u5f0f"
+};
 
-var Messages="zh-CN"==navigator.language
-?I18N["zh-CN"]
-:I18N.en;
+var Messages = "zh-CN" == navigator.language
+? I18N["zh-CN"]
+: I18N.en;
 
-async function init(){
+async function init()
+{
   I18N.init();
   await Settings.init();
   Clock.init();
