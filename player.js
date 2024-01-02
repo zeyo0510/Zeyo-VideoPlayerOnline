@@ -528,7 +528,7 @@ class FileManager
       FileManager.toggleDropzone(true),
       dragTimer = setInterval(function() {
         200 < performance.now() - lastDragTime && FileManager.dragEnd()
-      }, 200);
+      }, 200)
     )
   }
 
