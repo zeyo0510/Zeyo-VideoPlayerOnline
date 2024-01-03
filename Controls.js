@@ -21,8 +21,8 @@ class Controls
     playerPanel.addEventListener("click",Controls.onPlayerClick);
     openFileBtn.addEventListener("click",FileManager.openFiles);
     volumeBtn.addEventListener("click",a=>Player.toggleMute());
-    volume.addEventListener("input",Controls.onVolumeInput);
-    volume.addEventListener("change",a=>volume.blur());
+    volumeSlider.addEventListener("input",Controls.onVolumeInput);
+    volumeSlider.addEventListener("change",a=>volumeSlider.blur());
     previousBtn.addEventListener("click",Player.playPrevious);
     rewindBtn.addEventListener("click",a=>Player.seek(false,settings.seekStep));
     playBtn.addEventListener("click",Player.togglePlay);
@@ -118,14 +118,14 @@ class Controls
 
   static onVolumeInput()
   {
-    video.volume = volume.valueAsNumber;
+    video.volume = volumeSlider.valueAsNumber;
   }
 
   static onVolumeChange()
   {
     const a = video.volume;
     //////////////////////////////////////////////////
-    volume.value = a;
+    volumeSlider.value = a;
     //////////////////////////////////////////////////
          if (video.muted) { volumeBtn.src = "img/volume_off.svg" ; }
     else if (0.5 < a)     { volumeBtn.src = "img/volume_up.svg"  ; }
@@ -173,6 +173,7 @@ class Controls
     Controls.updateTime();
     //////////////////////////////////////////////////
     controlsPanel.classList.remove("d-none");
+    //////////////////////////////////////////////////
     playerPanel.classList.remove("hide-cursor");
   }
 
@@ -181,6 +182,7 @@ class Controls
     Controls.hidden = true;
     //////////////////////////////////////////////////
     controlsPanel.classList.add("d-none");
+    //////////////////////////////////////////////////
     playerPanel.classList.add("hide-cursor");
   }
 
