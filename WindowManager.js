@@ -117,4 +117,4 @@ class WindowManager
   }
 }
 
-globalThis.WindowManager;
+globalThis.WindowManager = WindowManager;
