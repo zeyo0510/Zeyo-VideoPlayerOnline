@@ -1,5 +1,3 @@
-console.log('20:35');
-
 var extensionMode;
 
 const popupWindow = true,
