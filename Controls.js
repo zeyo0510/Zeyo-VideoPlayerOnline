@@ -6,29 +6,53 @@ class Controls
   static init()
   {
     document.body.addEventListener("keydown",Controls.keyboardListener);
+    //////////////////////////////////////////////////
     document.addEventListener("fullscreenchange",Controls.onFullscreenChange);
-    Controls.progressDragging=false;
-    video.addEventListener("loadedmetadata",Controls.onLoadedmetadata);
-    video.addEventListener("timeupdate",Controls.updateTime);
-    video.addEventListener("volumechange",Controls.onVolumeChange);
-    video.addEventListener("ended",Controls.onVideoEnd);
-    video.addEventListener("pause",Controls.onPause);
-    video.addEventListener("play",Controls.onPlay);
-    progress.addEventListener("change",Controls.onProgressChange);
-    progress.addEventListener("input",Controls.onProgressInput);
-    rightTime.addEventListener("click",Controls.changeTimeMode);
-    controlsPanel.addEventListener("click",a=>a.stopPropagation());
-    playerPanel.addEventListener("click",Controls.onPlayerClick);
-    openFileBtn.addEventListener("click",FileManager.openFiles);
-    volumeBtn.addEventListener("click",a=>Player.toggleMute());
-    volumeSlider.addEventListener("input",Controls.onVolumeInput);
-    volumeSlider.addEventListener("change",a=>volumeSlider.blur());
-    previousBtn.addEventListener("click",Player.playPrevious);
-    rewindBtn.addEventListener("click",a=>Player.seek(false,settings.seekStep));
-    playBtn.addEventListener("click",Player.togglePlay);
-    forwardBtn.addEventListener("click",a=>Player.seek(true,settings.seekStep));
-    nextBtn.addEventListener("click",Player.playNext);
+    //////////////////////////////////////////////////
+    Controls.progressDragging = false;
+    //////////////////////////////////////////////////
+    controlsPanel.addEventListener("click",a => a.stopPropagation());
+    //////////////////////////////////////////////////
+    forwardBtn.addEventListener("click",a => Player.seek(true,settings.seekStep));
+    //////////////////////////////////////////////////
     fullscreenBtn.addEventListener("click",globalThis.WindowManager.toggleFullscreen);
+    //////////////////////////////////////////////////
+    nextBtn.addEventListener("click",Player.playNext);
+    //////////////////////////////////////////////////
+    openFileBtn.addEventListener("click",FileManager.openFiles);
+    //////////////////////////////////////////////////
+    playBtn.addEventListener("click",Player.togglePlay);
+    //////////////////////////////////////////////////
+    playerPanel.addEventListener("click",Controls.onPlayerClick);
+    //////////////////////////////////////////////////
+    previousBtn.addEventListener("click",Player.playPrevious);
+    //////////////////////////////////////////////////
+    progress.addEventListener("change",Controls.onProgressChange);
+    //////////////////////////////////////////////////
+    progress.addEventListener("input",Controls.onProgressInput);
+    //////////////////////////////////////////////////
+    rewindBtn.addEventListener("click",a=>Player.seek(false,settings.seekStep));
+    //////////////////////////////////////////////////
+    rightTime.addEventListener("click",Controls.changeTimeMode);
+    //////////////////////////////////////////////////
+    video.addEventListener("ended",Controls.onVideoEnd);
+    //////////////////////////////////////////////////
+    video.addEventListener("loadedmetadata",Controls.onLoadedmetadata);
+    //////////////////////////////////////////////////
+    video.addEventListener("pause",Controls.onPause);
+    //////////////////////////////////////////////////
+    video.addEventListener("play",Controls.onPlay);
+    //////////////////////////////////////////////////
+    video.addEventListener("timeupdate",Controls.updateTime);
+    //////////////////////////////////////////////////
+    video.addEventListener("volumechange",Controls.onVolumeChange);
+    //////////////////////////////////////////////////
+    volumeBtn.addEventListener("click",a => Player.toggleMute());
+    //////////////////////////////////////////////////
+    volumeSlider.addEventListener("change",a => volumeSlider.blur());
+    //////////////////////////////////////////////////
+    volumeSlider.addEventListener("input",Controls.onVolumeInput);
+    //////////////////////////////////////////////////
     "mediaSession"in navigator&&
     (
       navigator.mediaSession.setActionHandler("previoustrack",Player.playPrevious),
@@ -36,10 +60,15 @@ class Controls
       navigator.mediaSession.setActionHandler("seekbackward",()=>Player.seek(false,settings.seekStep)),
       navigator.mediaSession.setActionHandler("seekforward",()=>Player.seek(true,settings.seekStep))
     );
-    document.body.addEventListener("contextmenu",a=>a.preventDefault());
-    Controls.hidden=true;
+    //////////////////////////////////////////////////
+    document.body.addEventListener("contextmenu", a => a.preventDefault());
+    //////////////////////////////////////////////////
+    Controls.hidden = true;
+    //////////////////////////////////////////////////
     document.getElementById("settings").addEventListener("mousemove",Controls.onMouseMove);
+    //////////////////////////////////////////////////
     controlsPanel.addEventListener("mousemove",Controls.onMouseMove);
+    //////////////////////////////////////////////////
     playerPanel.addEventListener("mousemove",Controls.onMouseMove)
   }
 
