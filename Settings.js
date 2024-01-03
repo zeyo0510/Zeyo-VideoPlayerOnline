@@ -54,17 +54,20 @@ class Settings
 
   static saveSeekStep(a)
   {
-    if (1 <= seekStepInput.valueAsNumber)
+    a = seekStepInput.valueAsNumber;
+    if (1 <= a)
     {
-      Settings.save("seekStep", seekStepInput.valueAsNumber);
+      Settings.save("seekStep", a);
     }
   }
 
   static saveSeekLongStep(a)
   {
-    if (1 <= seekLongStepInput.valueAsNumber)
+    a = seekLongStepInput.valueAsNumber;
+    //////////////////////////////////////////////////
+    if (1 <= a)
     {
-      Settings.save("seekLongStep", seekLongStepInput.valueAsNumber);
+      Settings.save("seekLongStep", a);
     }
   }
 
@@ -84,7 +87,9 @@ class Settings
 
   static saveScreenshotFormat(a)
   {
-    Settings.save("screenshotFormat", screenshotFormatInput.value);
+    a = screenshotFormatInput.value;
+    //////////////////////////////////////////////////
+    Settings.save("screenshotFormat", a);
   }
 }
 
