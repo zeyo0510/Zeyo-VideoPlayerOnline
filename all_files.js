@@ -3,7 +3,7 @@ const AllFiles=[
   './player.css',
   './player.ext.js',
   './index.html',
-  './main.js',
+  './player.js',
   './shortcuts.html',
   './shortcuts.js',
   './icon/128.png',
