@@ -257,8 +257,7 @@ class Player
 
   static updateVideoTime()
   {
-    let a = `${Utils.formatTime(video.currentTime)} / ${Utils.formatTime(video.duration)}  [-${Utils.formatTime(video.duration-video.currentTime)}]`;
-    ltInfo.textContent = a;
+    ltInfo.textContent = `${Utils.formatTime(video.currentTime)} / ${Utils.formatTime(video.duration)}  [-${Utils.formatTime(video.duration-video.currentTime)}]`;
   }
 }
 
@@ -413,21 +412,21 @@ class Controls
       clickDblclickTimer = setTimeout(function() {
         clickDblclickTimer = 0;
         Player.togglePlay();
-      },400);
+      }, 400);
     }
   }
 
   static onMouseMove(a)
   {
     a.stopPropagation();
-    Controls.hidden&&Controls.show();
+    Controls.hidden && Controls.show();
     clearTimeout(mouseMoveTimer);
-    a=a.currentTarget.id;
+    a = a.currentTarget.id;
     let b = 1500;
-    "player" == a ? b = 1500 : 
-    "controls" == a ? b = 4500 :
+    "player"   == a && (b = 1500);
+    "controls" == a && (b = 4500);
     "settings" == a && (b = 20000);
-    mouseMoveTimer = setTimeout(Controls.hide, b)
+    mouseMoveTimer = setTimeout(Controls.hide, b);
   }
 
   static show()
@@ -574,7 +573,7 @@ class WindowManager
 {
   static init()
   {
-    WindowManager.saveWindowState()
+    WindowManager.saveWindowState();
   }
   
   static saveWindowState()
@@ -626,19 +625,19 @@ class WindowManager
 
   static scale(a)
   {
-    popupWindow && 0 < video.videoWidth && 0 < video.videoHeight &&
-    (
+    if (popupWindow && 0 < video.videoWidth && 0 < video.videoHeight)
+    {
       a
       ?  a=(window.innerWidth+video.videoWidth / 4) / video.videoWidth
       : (a=(window.innerWidth-video.videoWidth / 4) / video.videoWidth, a = Math.max(a,.25)),
       WindowManager.scaleSize(a)
-    )
+    }
   }
 
   static isMaxSize()
   {
     return window.outerWidth  == window.screen.availWidth
-    &&     window.outerHeight == window.screen.availHeight
+    &&     window.outerHeight == window.screen.availHeight;
   }
 
   static toggleMaxSize()
@@ -656,13 +655,13 @@ class WindowManager
 
   static async togglePip()
   {
-    document.pictureInPictureEnabled && !video.disablePictureInPicture && 0 !== video.readyState &&
-    (
-      document.fullscreenElement && await document.exitFullscreen(),
+    if (document.pictureInPictureEnabled && !video.disablePictureInPicture && 0 !== video.readyState)
+    {
+      document.fullscreenElement && await document.exitFullscreen();
       document.pictureInPictureElement
       ? document.exitPictureInPicture()
-      : video.requestPictureInPicture()
-    )
+      : video.requestPictureInPicture();
+    }
   }
 
   static async toggleFullscreen()
@@ -693,18 +692,21 @@ class Settings
 {
   static async init()
   {
-    seekStepInput.addEventListener("change",Utils.delay(Settings.saveSeekStep,500));
-    seekLongStepInput.addEventListener("change",Utils.delay(Settings.saveSeekLongStep,500));
-    volumeStepInput.addEventListener("change",Utils.delay(Settings.saveVolumeStep,500));
-    speedStepInput.addEventListener("change",Settings.saveSpeedStep);
-    screenshotFormatInput.addEventListener("change",Settings.saveScreenshotFormat);
+            seekStepInput.addEventListener("change", Utils.delay(Settings.saveSeekStep    , 500));
+        seekLongStepInput.addEventListener("change", Utils.delay(Settings.saveSeekLongStep, 500));
+          volumeStepInput.addEventListener("change", Utils.delay(Settings.saveVolumeStep  , 500));
+           speedStepInput.addEventListener("change", Settings.saveSpeedStep       );
+    screenshotFormatInput.addEventListener("change", Settings.saveScreenshotFormat);
+    //////////////////////////////////////////////////
     if(extensionMode)
       return new Promise(function(f,h){chrome.storage.sync.get(settings, function(g){settings=g;Settings.initInputValues();f()})});
+    //////////////////////////////////////////////////
     let a = localStorage.getItem("seekStep"),
         b = localStorage.getItem("seekLongStep"),
         c = localStorage.getItem("volumeStep"),
         d = localStorage.getItem("speedStep"),
         e = localStorage.getItem("screenshotFormat");
+    //////////////////////////////////////////////////
     a && (settings.seekStep         = parseInt(a,10));
     b && (settings.seekLongStep     = parseInt(b,10));
     c && (settings.volumeStep       = parseInt(c,10));
@@ -715,10 +717,10 @@ class Settings
   
   static initInputValues()
   {
-    seekStepInput.value         = settings.seekStep;
-    seekLongStepInput.value     = settings.seekLongStep;
-    volumeStepInput.value       = settings.volumeStep;
-    speedStepInput.value        = settings.speedStep;
+            seekStepInput.value = settings.seekStep;
+        seekLongStepInput.value = settings.seekLongStep;
+          volumeStepInput.value = settings.volumeStep;
+           speedStepInput.value = settings.speedStep;
     screenshotFormatInput.value = settings.screenshotFormat;
   }
 
@@ -759,12 +761,14 @@ class Settings
   static saveVolumeStep(a)
   {
     a = volumeStepInput.valueAsNumber;
+    //////////////////////////////////////////////////
     1 <= a && 50 >= a && Settings.save("volumeStep", a);
   }
 
   static saveSpeedStep(a)
   {
     a = parseFloat(speedStepInput.value);
+    //////////////////////////////////////////////////
     0 < a && 1 >= a && Settings.save("speedStep", a);
   }
 
