@@ -116,3 +116,5 @@ class WindowManager
     }
   }
 }
+
+globalThis.WindowManager;
