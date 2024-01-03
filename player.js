@@ -291,7 +291,7 @@ class Controls
     playBtn.addEventListener("click",Player.togglePlay);
     forwardBtn.addEventListener("click",a=>Player.seek(true,settings.seekStep));
     nextBtn.addEventListener("click",Player.playNext);
-    fullscreenBtn.addEventListener("click",WindowManager.toggleFullscreen);
+    fullscreenBtn.addEventListener("click",globalThis.WindowManager.toggleFullscreen);
     "mediaSession"in navigator&&
     (
       navigator.mediaSession.setActionHandler("previoustrack",Player.playPrevious),
@@ -325,7 +325,7 @@ class Controls
 
   static onLoadedmetadata()
   {
-    document.fullscreenElement || WindowManager.scaleSize(1);
+    document.fullscreenElement || globalThis.WindowManager.scaleSize(1);
     //////////////////////////////////////////////////
     progress.max = video.duration;
     //////////////////////////////////////////////////
@@ -398,7 +398,7 @@ class Controls
 
   static onVideoEnd()
   {
-    Player.playNext() || WindowManager.exitFullscreen();
+    Player.playNext() || globalThis.WindowManager.exitFullscreen();
   }
 
   static onPlayerClick(a)
@@ -407,7 +407,7 @@ class Controls
     {
       clearTimeout(clickDblclickTimer);
       clickDblclickTimer = 0;
-      WindowManager.toggleFullscreen();
+      globalThis.WindowManager.toggleFullscreen();
     } else {
       clickDblclickTimer = setTimeout(function() {
         clickDblclickTimer = 0;
@@ -458,20 +458,20 @@ class Controls
       37 === b && (a.ctrlKey||a.metaKey) ? (a.preventDefault(), Player.playPrevious()):
       39 === b && (a.ctrlKey||a.metaKey) ? (a.preventDefault(), Player.playNext()):
       83 !== b || !a.ctrlKey&&!a.metaKey||a.shiftKey?a.ctrlKey||a.altKey||a.metaKey||
-      (70===b?(a.preventDefault(),WindowManager.toggleFullscreen()):
-      87 === b ?(a.preventDefault(),WindowManager.toggleMaxSize()):
+      (70===b?(a.preventDefault(),globalThis.WindowManager.toggleFullscreen()):
+      87 === b ?(a.preventDefault(),globalThis.WindowManager.toggleMaxSize()):
       84 === b ?a.preventDefault():
       75 === b ||32===b?(a.preventDefault(),Player.togglePlay()):
       74 === b ||37===b?(a.preventDefault(),a.shiftKey?Player.seek(false,settings.seekLongStep):Player.seek(false,settings.seekStep)):
       76 === b ||39===b?(a.preventDefault(),a.shiftKey?Player.seek(true,settings.seekLongStep):Player.seek(true,settings.seekStep)):
       38 === b ?(a.preventDefault(),Player.volume(true,settings.volumeStep)):
       40 === b ?(a.preventDefault(),Player.volume(false,settings.volumeStep)):
-      "Equal"===c?(a.preventDefault(),a.shiftKey?WindowManager.scale(true):Player.speed(true,settings.speedStep)):
-      "Minus"===c?(a.preventDefault(),a.shiftKey?WindowManager.scale(false):Player.speed(false,settings.speedStep)):
-      "Digit0"===c?(a.preventDefault(),a.shiftKey?WindowManager.scaleSize(1):Player.resetSpeed()):
+      "Equal"===c?(a.preventDefault(),a.shiftKey?globalThis.WindowManager.scale(true):Player.speed(true,settings.speedStep)):
+      "Minus"===c?(a.preventDefault(),a.shiftKey?globalThis.WindowManager.scale(false):Player.speed(false,settings.speedStep)):
+      "Digit0"===c?(a.preventDefault(),a.shiftKey?globalThis.WindowManager.scaleSize(1):Player.resetSpeed()):
        67 === b?a.preventDefault():78===b?(a.preventDefault(),Player.playNext()):
        77 === b?(a.preventDefault(),Player.toggleMute()):
-       80 === b?(a.preventDefault(),a.shiftKey?WindowManager.togglePip():Player.playPrevious()):
+       80 === b?(a.preventDefault(),a.shiftKey?globalThis.WindowManager.togglePip():Player.playPrevious()):
       188 === b?(a.preventDefault(),Player.seek(false,.042)):
       190 === b?(a.preventDefault(),Player.seek(true,.042)):
        83 === b&&a.shiftKey?(a.preventDefault(),Utils.screenshot()):
@@ -719,5 +719,5 @@ async function init()
   Player.init();
   Controls.init();
   FileManager.init();
-  WindowManager.init()
+  globalThis.WindowManager.init()
 };
