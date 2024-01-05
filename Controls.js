@@ -185,13 +185,19 @@ class Controls
   static onMouseMove(a)
   {
     a.stopPropagation();
+    //////////////////////////////////////////////////
     Controls.hidden && Controls.show();
+    //////////////////////////////////////////////////
     clearTimeout(mouseMoveTimer);
+    //////////////////////////////////////////////////
     a = a.currentTarget.id;
+    //////////////////////////////////////////////////
     let b = 1500;
+    //////////////////////////////////////////////////
     "player"   == a && (b = 1500);
     "controls" == a && (b = 4500);
     "settings" == a && (b = 20000);
+    //////////////////////////////////////////////////
     mouseMoveTimer = setTimeout(Controls.hide, b);
   }
 
@@ -222,30 +228,39 @@ class Controls
     {
       b = a.keyCode;
       var c = a.code;
-      79 === b && (a.ctrlKey||a.metaKey) ? (a.preventDefault(), FileManager.openFiles()):
-      37 === b && (a.ctrlKey||a.metaKey) ? (a.preventDefault(), Player.playPrevious()):
-      39 === b && (a.ctrlKey||a.metaKey) ? (a.preventDefault(), Player.playNext()):
-      83 !== b || !a.ctrlKey&&!a.metaKey||a.shiftKey?a.ctrlKey||a.altKey||a.metaKey||
-      (70===b?(a.preventDefault(),globalThis.WindowManager.toggleFullscreen()):
-      87 === b ?(a.preventDefault(),globalThis.WindowManager.toggleMaxSize()):
-      84 === b ?a.preventDefault():
-      75 === b ||32===b?(a.preventDefault(),Player.togglePlay()):
-      74 === b ||37===b?(a.preventDefault(),a.shiftKey?Player.seek(false,settings.seekLongStep):Player.seek(false,settings.seekStep)):
-      76 === b ||39===b?(a.preventDefault(),a.shiftKey?Player.seek(true,settings.seekLongStep):Player.seek(true,settings.seekStep)):
-      38 === b ?(a.preventDefault(),Player.volume(true,settings.volumeStep)):
-      40 === b ?(a.preventDefault(),Player.volume(false,settings.volumeStep)):
-      "Equal"===c?(a.preventDefault(),a.shiftKey?globalThis.WindowManager.scale(true):Player.speed(true,settings.speedStep)):
-      "Minus"===c?(a.preventDefault(),a.shiftKey?globalThis.WindowManager.scale(false):Player.speed(false,settings.speedStep)):
-      "Digit0"===c?(a.preventDefault(),a.shiftKey?globalThis.WindowManager.scaleSize(1):Player.resetSpeed()):
-       67 === b?a.preventDefault():78===b?(a.preventDefault(),Player.playNext()):
-       77 === b?(a.preventDefault(),Player.toggleMute()):
-       80 === b?(a.preventDefault(),a.shiftKey?globalThis.WindowManager.togglePip():Player.playPrevious()):
-      188 === b?(a.preventDefault(),Player.seek(false,.042)):
-      190 === b?(a.preventDefault(),Player.seek(true,.042)):
-       83 === b&&a.shiftKey?(a.preventDefault(),Utils.screenshot()):
-       71 === b?(a.preventDefault(),Player.toggleVideoTime()):
-       72 === b?(a.preventDefault(),Clock.toggleClockTime()):
-       66 === b&&a.preventDefault()):a.preventDefault()
+      //////////////////////////////////////////////////
+      (79 === b) && (a.ctrlKey || a.metaKey) && (a.preventDefault(), FileManager.openFiles());
+      (37 === b) && (a.ctrlKey || a.metaKey) && (a.preventDefault(), Player.playPrevious());
+      (39 === b) && (a.ctrlKey || a.metaKey) && (a.preventDefault(), Player.playNext());
+
+      if ((83 !== b) || (!a.ctrlKey && !a.metaKey) || (a.shiftKey))
+      {
+        (a.ctrlKey) ||
+        (a.altKey)  ||
+        (a.metaKey) ||
+        (70===b?(a.preventDefault(),globalThis.WindowManager.toggleFullscreen()):
+        87 === b ?(a.preventDefault(),globalThis.WindowManager.toggleMaxSize()):
+        84 === b ?a.preventDefault():
+        75 === b ||32===b?(a.preventDefault(),Player.togglePlay()):
+        74 === b ||37===b?(a.preventDefault(),a.shiftKey?Player.seek(false,settings.seekLongStep):Player.seek(false,settings.seekStep)):
+        76 === b ||39===b?(a.preventDefault(),a.shiftKey?Player.seek(true,settings.seekLongStep):Player.seek(true,settings.seekStep)):
+        38 === b ?(a.preventDefault(),Player.volume(true,settings.volumeStep)):
+        40 === b ?(a.preventDefault(),Player.volume(false,settings.volumeStep)):
+        "Equal"===c?(a.preventDefault(),a.shiftKey?globalThis.WindowManager.scale(true):Player.speed(true,settings.speedStep)):
+        "Minus"===c?(a.preventDefault(),a.shiftKey?globalThis.WindowManager.scale(false):Player.speed(false,settings.speedStep)):
+        "Digit0"===c?(a.preventDefault(),a.shiftKey?globalThis.WindowManager.scaleSize(1):Player.resetSpeed()):
+        67 === b ? a.preventDefault():78===b?(a.preventDefault(),Player.playNext()):
+        77 === b ? (a.preventDefault(),Player.toggleMute()):
+        80 === b ? (a.preventDefault(),a.shiftKey?globalThis.WindowManager.togglePip():Player.playPrevious()):
+        188 === b ? (a.preventDefault(),Player.seek(false,0.042)):
+        190 === b ? (a.preventDefault(),Player.seek(true,0.042)):
+        83 === b && a.shiftKey?(a.preventDefault(),Utils.screenshot()):
+        71 === b ? (a.preventDefault(),Player.toggleVideoTime()):
+        72 === b ? (a.preventDefault(),Clock.toggleClockTime()):
+        66 === b && a.preventDefault())
+      } else {
+        a.preventDefault()
+      }
     }
   }
 }
