@@ -229,9 +229,10 @@ class Controls
       b = a.keyCode;
       var c = a.code;
       //////////////////////////////////////////////////
-      (79 === b) && (a.ctrlKey || a.metaKey) && (a.preventDefault(), FileManager.openFiles()); // Control + O
-      (37 === b) && (a.ctrlKey || a.metaKey) && (a.preventDefault(), Player.playPrevious()); // Control + Left Arrow
-      (39 === b) && (a.ctrlKey || a.metaKey) && (a.preventDefault(), Player.playNext()); // Control + Right Arrow
+      (79 === b) &&  (a.ctrlKey || a.metaKey)                                 && (a.preventDefault(), FileManager.openFiles()                    ); // Control + O
+      (37 === b) &&  (a.ctrlKey || a.metaKey)                                 && (a.preventDefault(), Player.playPrevious()                      ); // Control + Left Arrow
+      (39 === b) &&  (a.ctrlKey || a.metaKey)                                 && (a.preventDefault(), Player.playNext()                          ); // Control + Right Arrow
+      (70 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), globalThis.WindowManager.toggleFullscreen()); // F
 
       if ((83 !== b) || (!a.ctrlKey && !a.metaKey) || (a.shiftKey))
       {
@@ -239,7 +240,6 @@ class Controls
         (a.altKey)  ||
         (a.metaKey) ||
         (
-          70 === b                ? (a.preventDefault(),globalThis.WindowManager.toggleFullscreen()):
           87 === b                ? (a.preventDefault(),globalThis.WindowManager.toggleMaxSize()):
           84 === b                ? (a.preventDefault()):
           32 === b                ? (a.preventDefault(),Player.togglePlay()):
