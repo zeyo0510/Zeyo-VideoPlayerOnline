@@ -244,7 +244,17 @@ class Controls
       ( 72 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Clock.toggleClockTime()                    ); // H
       (188 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(false, 0.042)                  ); // ,
       (190 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(true,  0.042)                  ); // .
-
+      ( 83 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Utils.screenshot()                         ); // Shift + S
+      ( 37 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Player.seek(false,settings.seekLongStep)   ); // Shift + Left Arrow
+      ( 37 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(false,settings.seekStep)       ); // Left Arrow
+      ( 74 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Player.seek(false,settings.seekLongStep)   ); // Shift + J
+      ( 74 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(false,settings.seekStep)       ); // J
+      ( 76 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Player.seek(true ,settings.seekLongStep)   ); // Shift + L
+      ( 76 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(true ,settings.seekStep)       ); // L
+      ( 39 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Player.seek(true,settings.seekLongStep)    ); // Shift + Right Arrow
+      ( 39 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(true,settings.seekStep)        ); // Right Arrow
+      ( 80 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), globalThis.WindowManager.togglePip()       ); // Shift + P
+      ( 80 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.playPrevious()                      ); // P
 
       if ((83 !== b) || (!a.ctrlKey && !a.metaKey) || (a.shiftKey))
       {
@@ -253,16 +263,10 @@ class Controls
         (a.metaKey) ||
         (
           84 === b                ? (a.preventDefault()):
-          37 === b                ? (a.preventDefault(),a.shiftKey?Player.seek(false,settings.seekLongStep):Player.seek(false,settings.seekStep)):
-          74 === b                ? (a.preventDefault(),a.shiftKey?Player.seek(false,settings.seekLongStep):Player.seek(false,settings.seekStep)):
-          76 === b                ? (a.preventDefault(),a.shiftKey?Player.seek(true,settings.seekLongStep):Player.seek(true,settings.seekStep)):
-          39 === b                ? (a.preventDefault(),a.shiftKey?Player.seek(true,settings.seekLongStep):Player.seek(true,settings.seekStep)):
           "Equal"  === c          ? (a.preventDefault(),a.shiftKey?globalThis.WindowManager.scale(true):Player.speed(true,settings.speedStep)):
           "Minus"  === c          ? (a.preventDefault(),a.shiftKey?globalThis.WindowManager.scale(false):Player.speed(false,settings.speedStep)):
           "Digit0" === c          ? (a.preventDefault(),a.shiftKey?globalThis.WindowManager.scaleSize(1):Player.resetSpeed()):
            67 === b               ? (a.preventDefault()):
-           80 === b               ? (a.preventDefault(),a.shiftKey?globalThis.WindowManager.togglePip():Player.playPrevious()):
-           83 === b && a.shiftKey ? (a.preventDefault(),Utils.screenshot()):
            66 === b && (a.preventDefault())
         )
       } else {
