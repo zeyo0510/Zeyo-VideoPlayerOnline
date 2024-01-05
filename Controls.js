@@ -232,29 +232,35 @@ class Controls
       ( 79 === b) &&  (a.ctrlKey || a.metaKey)                                 && (a.preventDefault(), FileManager.openFiles()                    ); // Control + O
       ( 37 === b) &&  (a.ctrlKey || a.metaKey)                                 && (a.preventDefault(), Player.playPrevious()                      ); // Control + Left Arrow
       ( 39 === b) &&  (a.ctrlKey || a.metaKey)                                 && (a.preventDefault(), Player.playNext()                          ); // Control + Right Arrow
-      ( 70 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), globalThis.WindowManager.toggleFullscreen()); // F
-      ( 87 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), globalThis.WindowManager.toggleMaxSize()   ); // W
+      ( 37 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Player.seek(false, settings.seekLongStep)  ); // Shift + Left Arrow
+      ( 39 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Player.seek(true , settings.seekLongStep)  ); // Shift + Right Arrow
+      ( 74 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Player.seek(false, settings.seekLongStep)  ); // Shift + J
+      ( 76 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Player.seek(true , settings.seekLongStep)  ); // Shift + L
+      ( 80 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), globalThis.WindowManager.togglePip()       ); // Shift + P
+      ( 83 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Utils.screenshot()                         ); // Shift + S
       ( 32 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.togglePlay()                        ); // Space
-      ( 75 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.togglePlay()                        ); // K
+      ( 37 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek  (false, settings.seekStep  )  ); // Left Arrow
       ( 38 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.volume(true , settings.volumeStep)  ); // Up Arrow
+      ( 39 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek  (true , settings.seekStep  )  ); // Right Arrow
       ( 40 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.volume(false, settings.volumeStep)  ); // Down Arrow
-      ( 78 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.playNext()                          ); // N
-      ( 77 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.toggleMute()                        ); // M
+      ( 70 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), globalThis.WindowManager.toggleFullscreen()); // F
       ( 71 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.toggleVideoTime()                   ); // G
       ( 72 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Clock.toggleClockTime()                    ); // H
+      ( 74 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(false,settings.seekStep)       ); // J
+      ( 75 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.togglePlay()                        ); // K
+      ( 76 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(true ,settings.seekStep)       ); // L
+      ( 77 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.toggleMute()                        ); // M
+      ( 78 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.playNext()                          ); // N
+      ( 80 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.playPrevious()                      ); // P
+      ( 87 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), globalThis.WindowManager.toggleMaxSize()   ); // W
       (188 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(false, 0.042)                  ); // ,
       (190 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(true,  0.042)                  ); // .
-      ( 83 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Utils.screenshot()                         ); // Shift + S
-      ( 37 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Player.seek(false,settings.seekLongStep)   ); // Shift + Left Arrow
-      ( 37 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(false,settings.seekStep)       ); // Left Arrow
-      ( 74 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Player.seek(false,settings.seekLongStep)   ); // Shift + J
-      ( 74 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(false,settings.seekStep)       ); // J
-      ( 76 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Player.seek(true ,settings.seekLongStep)   ); // Shift + L
-      ( 76 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(true ,settings.seekStep)       ); // L
-      ( 39 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), Player.seek(true,settings.seekLongStep)    ); // Shift + Right Arrow
-      ( 39 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.seek(true,settings.seekStep)        ); // Right Arrow
-      ( 80 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), globalThis.WindowManager.togglePip()       ); // Shift + P
-      ( 80 === b) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.playPrevious()                      ); // P
+      ("Equal"  === c) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), globalThis.WindowManager.scale(true)   ); // Shift + =
+      ("Minus"  === c) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), globalThis.WindowManager.scale(false)  ); // Shift + -
+      ("Digit0" === c) && !(a.ctrlKey || a.metaKey) && !(a.altKey) &&  (a.shiftKey) && (a.preventDefault(), globalThis.WindowManager.scaleSize(1)  ); // Shift + 0
+      ("Equal"  === c) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.speed(true , settings.speedStep)); // =
+      ("Minus"  === c) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.speed(false, settings.speedStep)); // -
+      ("Digit0" === c) && !(a.ctrlKey || a.metaKey) && !(a.altKey) && !(a.shiftKey) && (a.preventDefault(), Player.resetSpeed()                    ); // 0
 
       if ((83 !== b) || (!a.ctrlKey && !a.metaKey) || (a.shiftKey))
       {
@@ -263,9 +269,6 @@ class Controls
         (a.metaKey) ||
         (
           84 === b                ? (a.preventDefault()):
-          "Equal"  === c          ? (a.preventDefault(),a.shiftKey?globalThis.WindowManager.scale(true):Player.speed(true,settings.speedStep)):
-          "Minus"  === c          ? (a.preventDefault(),a.shiftKey?globalThis.WindowManager.scale(false):Player.speed(false,settings.speedStep)):
-          "Digit0" === c          ? (a.preventDefault(),a.shiftKey?globalThis.WindowManager.scaleSize(1):Player.resetSpeed()):
            67 === b               ? (a.preventDefault()):
            66 === b && (a.preventDefault())
         )
