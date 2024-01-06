@@ -10,9 +10,10 @@ class Utils
     }
   }
 
-  static showInfo(a)
+  static showInfo(message)
   {
-    info.textContent = a;
+    info.textContent = message;
+    //////////////////////////////////////////////////
     info.classList.remove("d-none");
     //////////////////////////////////////////////////
     Utils.delayHideInfo();
@@ -23,9 +24,10 @@ class Utils
     info.classList.add("d-none");
   }
 
-  static showError(a)
+  static showError(message)
   {
-    errorInfo.textContent = a;
+    errorInfo.textContent = message;
+    //////////////////////////////////////////////////
     errorInfo.classList.remove("d-none");
     //////////////////////////////////////////////////
     Utils.delayHideError();

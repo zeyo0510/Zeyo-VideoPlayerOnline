@@ -28,11 +28,11 @@ class FileManager
     FileManager.inputFile.click();
   }
 
-  static updateFileList(a)
+  static updateFileList(files)
   {
-    if (0 < a.length)
+    if (0 < files.length)
     {
-      fileList = Array.from(a);
+      fileList = Array.from(files);
       //////////////////////////////////////////////////
       FileManager.playIndex = 0;
       //////////////////////////////////////////////////
@@ -40,7 +40,7 @@ class FileManager
     }
   }
 
-  static onSelectFile(a)
+  static onSelectFile(e)
   {
     FileManager.updateFileList(this.files);
     //////////////////////////////////////////////////
@@ -63,10 +63,12 @@ class FileManager
     FileManager.toggleDropzone(false);
   }
 
-  static onDropOver(a)
+  static onDropOver(e)
   {
-    a.preventDefault();
-    a.dataTransfer.dropEffect = "move";
+    e.preventDefault();
+    //////////////////////////////////////////////////
+    e.dataTransfer.dropEffect = "move";
+    //////////////////////////////////////////////////
     lastDragTime = performance.now();
     0 == dragTimer &&
     (
@@ -77,11 +79,13 @@ class FileManager
     )
   }
 
-  static onDrop(a)
+  static onDrop(e)
   {
-    a.preventDefault();
+    e.preventDefault();
+    //////////////////////////////////////////////////
     FileManager.dragEnd();
-    FileManager.updateFileList(a.dataTransfer.files);
+    //////////////////////////////////////////////////
+    FileManager.updateFileList(e.dataTransfer.files);
   }
 }
 //////////////////////////////////////////////////

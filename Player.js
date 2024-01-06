@@ -60,16 +60,16 @@ class Player
 
   static playNext()
   {
-    let a = FileManager.getNextFile(true);
+    let file = FileManager.getNextFile(true);
     //////////////////////////////////////////////////
-    return a ? (Player.loadFile(a), true) : false
+    return file ? (Player.loadFile(file), true) : false
   }
 
   static playPrevious()
   {
-    let a = FileManager.getNextFile(false);
+    let file = FileManager.getNextFile(false);
     //////////////////////////////////////////////////
-    return a ? (Player.loadFile(a), true) : false
+    return file ? (Player.loadFile(file), true) : false
   }
 
   static togglePlay()
@@ -99,7 +99,7 @@ class Player
     )
   }
 
-  static volume(a,b)
+  static volume(a, b)
   {
     let c = Math.round(100 * video.volume);
         c = a ? Math.min(c + b, 100)
@@ -108,7 +108,7 @@ class Player
     Utils.showInfo(Messages.volumeIs + c);
   }
 
-  static speed(a,b)
+  static speed(a, b)
   {
     a = a ? parseFloat((video.playbackRate + b).toFixed(2))
           : parseFloat((video.playbackRate - b).toFixed(2));

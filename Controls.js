@@ -53,23 +53,23 @@ class Controls
     //////////////////////////////////////////////////
     volumeSlider.addEventListener("input",Controls.onVolumeInput);
     //////////////////////////////////////////////////
-    "mediaSession"in navigator&&
-    (
-      navigator.mediaSession.setActionHandler("previoustrack",Player.playPrevious),
-      navigator.mediaSession.setActionHandler("nexttrack",Player.playNext),
-      navigator.mediaSession.setActionHandler("seekbackward",()=>Player.seek(false,settings.seekStep)),
-      navigator.mediaSession.setActionHandler("seekforward",()=>Player.seek(true,settings.seekStep))
-    );
+    if ("mediaSession"in navigator)
+    {
+      navigator.mediaSession.setActionHandler("previoustrack",       Player.playPrevious                  );
+      navigator.mediaSession.setActionHandler("nexttrack"    ,       Player.playNext                      );
+      navigator.mediaSession.setActionHandler("seekbackward" , () => Player.seek(false, settings.seekStep));
+      navigator.mediaSession.setActionHandler("seekforward"  , () => Player.seek(true , settings.seekStep));
+    }
     //////////////////////////////////////////////////
     document.body.addEventListener("contextmenu", a => a.preventDefault());
     //////////////////////////////////////////////////
     Controls.hidden = true;
     //////////////////////////////////////////////////
-    document.getElementById("settings").addEventListener("mousemove",Controls.onMouseMove);
+    document.getElementById("settings").addEventListener("mousemove", Controls.onMouseMove);
     //////////////////////////////////////////////////
-    controlsPanel.addEventListener("mousemove",Controls.onMouseMove);
+    controlsPanel.addEventListener("mousemove", Controls.onMouseMove);
     //////////////////////////////////////////////////
-    playerPanel.addEventListener("mousemove",Controls.onMouseMove)
+    playerPanel.addEventListener("mousemove", Controls.onMouseMove)
   }
 
   static changeTimeMode()
