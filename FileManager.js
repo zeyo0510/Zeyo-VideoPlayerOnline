@@ -84,5 +84,5 @@ class FileManager
     FileManager.updateFileList(a.dataTransfer.files);
   }
 }
-
+//////////////////////////////////////////////////
 globalThis.FileManager = FileManager;

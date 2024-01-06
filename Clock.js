@@ -29,5 +29,5 @@ class Clock
     rtInfo.textContent = Clock.ClockFormat.format(new Date);
   }
 }
-
+//////////////////////////////////////////////////
 globalThis.Clock = Clock;

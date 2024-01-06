@@ -45,5 +45,5 @@ I18N["zh-CN"] =
   , error               : "\u51fa\u9519\u4e86"
   , cannotSupportFormat : "\u4e0d\u652f\u6301\u6b64\u89c6\u9891\u683c\u5f0f"
 };
-
+//////////////////////////////////////////////////
 globalThis.I18N = I18N;

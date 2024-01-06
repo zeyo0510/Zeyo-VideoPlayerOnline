@@ -92,5 +92,5 @@ class Settings
     Settings.save("screenshotFormat", a);
   }
 }
-
+//////////////////////////////////////////////////
 globalThis.Settings = Settings;

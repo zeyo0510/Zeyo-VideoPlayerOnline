@@ -14,6 +14,7 @@ class Utils
   {
     info.textContent = a;
     info.classList.remove("d-none");
+    //////////////////////////////////////////////////
     Utils.delayHideInfo();
   }
 
@@ -26,6 +27,7 @@ class Utils
   {
     errorInfo.textContent = a;
     errorInfo.classList.remove("d-none");
+    //////////////////////////////////////////////////
     Utils.delayHideError();
   }
 
@@ -60,5 +62,5 @@ class Utils
     }
   }
 }
-
+//////////////////////////////////////////////////
 globalThis.Utils = Utils;

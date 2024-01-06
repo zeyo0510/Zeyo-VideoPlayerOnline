@@ -146,5 +146,5 @@ class Player
     ltInfo.textContent = `${Utils.formatTime(video.currentTime)} / ${Utils.formatTime(video.duration)}  [-${Utils.formatTime(video.duration-video.currentTime)}]`;
   }
 }
-
+//////////////////////////////////////////////////
 globalThis.Player = Player;
