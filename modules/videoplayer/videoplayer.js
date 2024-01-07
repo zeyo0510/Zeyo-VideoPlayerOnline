@@ -1,8 +1,10 @@
 ((name) => {
-  class VideoPlayer
+  class VideoPlayer extends HTMLElement
   {
     constructor()
     {
+      super();
+      //////////////////////////////////////////////////
       console.log('VideoPlayer: constructor');
     }
   }
